@@ -4,7 +4,6 @@ import pygame
 from   pygame.locals import *
 from   pygame.sprite import Group
 
-import resource
 from   sprite   import *
 from   engine   import Engine
 from   event    import *
@@ -14,7 +13,6 @@ class God(object):
         self._config = ConfigParser()
         self._config.read(cfg_file)
         self._robots = dict()
-        self._resmgr = resource.ResourceManager()
         self._engine = Engine(self._config)
 
         self._gp_robots = Group()
@@ -23,7 +21,7 @@ class God(object):
     def add_robot(self, robot):
         robot_id = '%s.%s' % (robot['k.team'], robot['k.name'])
         self._robots[robot_id] = robot
-        sprite = SpRobot(robot, self._resmgr.get_image('tank'))
+        sprite = SpRobot(robot, self._engine.get_image('tank'))
         robot['k.sprite'] = sprite
         self._gp_robots.add(sprite)
 
