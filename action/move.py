@@ -1,5 +1,6 @@
 from basic   import Action
 from compose import SequenceAction
+from util    import *
 
 __all__ = ['AcMove', 'AcTurn', 'AcMoveTo']
 
@@ -37,7 +38,7 @@ class AcTurn(Action):
 class AcMoveTo(Action):
     def __init__(self, robot, dest):
         Action.__init__(self, robot)
-        aturn = AcTurn(robot, robot['k.direction']-dest)
+        aturn = AcTurn(robot, dest-robot['k.position'])
         amove = AcMove(robot, dest)
         self._action = SequenceAction(robot, [aturn, amove])
 

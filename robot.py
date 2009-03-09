@@ -40,6 +40,9 @@ class Robot(Thread):
                 self.process_event(event)
 
     def process_event(self, event):
-        if isinstance(event, EvIdle) and self.first:
-            self['k.action'] = AcMoveTo(self, vec2d(300, 300))
-            self.first = False
+        if isinstance(event, EvIdle):
+            import random
+            self['k.action'] = AcMoveTo(self, vec2d(random.randint(0, 500), random.randint(0, 500)))
+            # if self.first:
+            #     self['k.action'] = AcTurn(self, vec2d(0, 1))
+            #     self.first = False
