@@ -12,8 +12,7 @@ class Robot(Thread):
         self._queue = Queue()
         self._lock  = RLock()
         self._props = dict(props)
-
-        self.first = True
+        self._ai = None
         
     def __getitem__(self, key):
         default = None
@@ -28,21 +27,11 @@ class Robot(Thread):
     def event(self, event):
         self._queue.put(event)
 
+    def assign_ai(self, ai):
+        self._ai = ai
+
     def run(self):
         while True:
             event = self._queue.get(block=True)
-            if isinstance(event, EvDeath):
-                self['k.alive'] = False
-                break
-            elif isinstance(event, EvBorn):
-                self['k.alive'] = True
-            else:
-                self.process_event(event)
+            self._ai.process_event(event)
 
-    def process_event(self, event):
-        if isinstance(event, EvIdle):
-            import random
-            self['k.action'] = AcMoveTo(self, vec2d(random.randint(0, 500), random.randint(0, 500)))
-            # if self.first:
-            #     self['k.action'] = AcTurn(self, vec2d(0, 1))
-            #     self.first = False

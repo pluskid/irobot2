@@ -14,3 +14,7 @@ class EvIdle(Event):
     "Event for idle robot"
     pass
 
+class EvDone(Event):
+    "Event for action done"
+    pass
+

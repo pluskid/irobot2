@@ -58,5 +58,6 @@ class God(object):
             is_done = action.update(self, time_passed)
             if is_done:
                 robot['k.action'] = None
+                robot.event(EvDone())
         else:
             robot.event(EvIdle())
