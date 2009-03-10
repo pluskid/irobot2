@@ -25,8 +25,10 @@ class Engine(object):
 
         self._groups = []
 
-    def get_image(self, key):
-        return self._resmgr.get_image(key)
+    def get_image(self, key, colorkey=-1):
+        return self._resmgr.get_image(key, colorkey=colorkey)
+    def get_images(self, key, colorkey=-1):
+        return self._resmgr.get_images(key, colorkey=colorkey)
 
     def tick(self):
         return self._clock.tick(self._fps)

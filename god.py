@@ -16,7 +16,9 @@ class God(object):
         self._engine = Engine(self._config)
 
         self._gp_robots = Group()
+        self._gp_explodes = Group()
         self._engine.add_group(self._gp_robots)
+        self._engine.add_group(self._gp_explodes)
 
     def add_robot(self, robot):
         robot_id = '%s.%s' % (robot['k.team'], robot['k.name'])
@@ -24,6 +26,11 @@ class God(object):
         sprite = SpRobot(robot, self._engine.get_image('tank'))
         robot['k.sprite'] = sprite
         self._gp_robots.add(sprite)
+
+        # TEST CODE
+        images = self._engine.get_images('explode-2', colorkey='alpha')
+        explode = SpExplode((300, 300), images)
+        self._gp_explodes.add(explode)
 
     def start(self):
         for robot in self._robots.itervalues():
