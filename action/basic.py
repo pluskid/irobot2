@@ -1,3 +1,5 @@
+from event import EvDone
+
 class Action(object):
     """\
     Base class for all actions. Real actions should
@@ -5,6 +7,4 @@ class Action(object):
     """
     def __init__(self, robot):
         self._robot = robot
-        
-    def finish(self):
-        self._robot['k.action'] = None
+        self.event_done = EvDone

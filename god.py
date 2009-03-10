@@ -16,9 +16,9 @@ class God(object):
         self._engine = Engine(self._config)
 
         self._gp_robots = Group()
-        self._gp_explodes = Group()
+        self._gp_animations = Group()
         self._engine.add_group(self._gp_robots)
-        self._engine.add_group(self._gp_explodes)
+        self._engine.add_group(self._gp_animations)
 
     def add_robot(self, robot):
         robot_id = '%s.%s' % (robot['k.team'], robot['k.name'])
@@ -28,9 +28,16 @@ class God(object):
         self._gp_robots.add(sprite)
 
         # TEST CODE
-        images = self._engine.get_images('explode-3', colorkey='alpha')
-        explode = SpExplode((300, 300), images)
-        self._gp_explodes.add(explode)
+        images = self._engine.get_images('magic-small', colorkey='alpha')
+        explode = SpMovingAnimation(robot, images)
+        self._gp_animations.add(explode)
+
+    def add_animation(self, animation):
+        self._gp_animations.add(animation)
+
+    @property
+    def engine(self):
+        return self._engine
 
     def start(self):
         for robot in self._robots.itervalues():
@@ -60,9 +67,9 @@ class God(object):
     def perform_action(self, robot, time_passed):
         action = robot['k.action']
         if action is not None:
-            is_done = action.update(self, time_passed)
-            if is_done:
+            event = action.update(self, time_passed)
+            if event is not None:
                 robot['k.action'] = None
-                robot.event(EvDone())
+                robot.event(event)
         else:
             robot.event(EvIdle())

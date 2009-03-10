@@ -9,11 +9,17 @@ class SpRobot(Sprite):
         self._robot = robot
         self._base_image = image
         self.rotate_image()
+        self.alpha_image()
 
     def update(self):
-        direction = self._robot['k.direction']
-        if direction != self._direction:
-            self.rotate_image()
+        props = ['direction', 'alpha']
+        for prop in props:
+            val = self._robot['k.%s' % prop]
+            if val != getattr(self, '_%s' % prop):
+                self.rotate_image()
+                self.alpha_image()
+                break
+
         pos = self._robot['k.position']
         self.rect = self.image.get_rect()
         self.rect.center = (pos.x, pos.y)
@@ -22,6 +28,6 @@ class SpRobot(Sprite):
         self._direction = self._robot['k.direction']
         self.image = pygame.transform.rotate(
                 self._base_image, -self._direction.angle)
-
-
-
+    def alpha_image(self):
+        self._alpha = self._robot['k.alpha']
+        self.image.set_alpha(self._alpha)

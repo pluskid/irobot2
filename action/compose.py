@@ -11,5 +11,5 @@ class SequenceAction(Action):
         if is_finish:
             self._cursor += 1
             if self._cursor >= len(self._actions):
-                return True
+                return self.event_done()
 

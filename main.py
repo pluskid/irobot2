@@ -10,6 +10,7 @@ god = God('default.ini')
 rpropos = {
         'k.position': vec2d(500, 400),
         'k.direction': vec2d(1, 0),
+        'k.alpha': 255,
         'k.team': 'kid',
         'k.name': 'Apache',
         'k.speed': 0.1,
@@ -23,7 +24,10 @@ def st_init():
 def st_term():
     pass
 def st_loop(run_action):
-    run_action('MoveTo', vec2d(randint(0, 500), randint(0, 500)))
+    if randint(0, 1) == 0:
+        run_action('Shift', vec2d(randint(0, 500), randint(0, 500)))
+    else:
+        run_action('MoveTo', vec2d(randint(0, 500), randint(0, 500)))
 states = {
         'Global': {
             'initialize': st_init,
