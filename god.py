@@ -28,7 +28,7 @@ class God(object):
         self._gp_robots.add(sprite)
 
         # TEST CODE
-        images = self._engine.get_images('explode-2', colorkey='alpha')
+        images = self._engine.get_images('explode-3', colorkey='alpha')
         explode = SpExplode((300, 300), images)
         self._gp_explodes.add(explode)
 
