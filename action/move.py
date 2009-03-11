@@ -2,6 +2,7 @@ from basic   import Action
 from compose import SequenceAction
 from util    import *
 from sprite  import SpAnimation
+from event   import EvCollide
 
 __all__ = ['AcMove', 'AcTurn', 'AcMoveTo', 'AcAppear', 
            'AcDisappear', 'AcShift']
@@ -15,9 +16,18 @@ class AcMove(Action):
         vdist = (self._dest-self._robot['k.position'])
         distance = intv*self._robot['k.speed']
         if distance >= vdist.length:
-            self._robot['k.position'] = self._dest
+            new_pos = self._dest
+        else:
+            new_pos = self._robot['k.position'] + vdist.normalized()*distance
+        rect = self._robot['k.sprite'].image.get_rect()
+        rect.center = new_pos
+        target = god.collision_detect(rect, self._robot['k.sprite'])
+        if target is not None:
+            return EvCollide(target)
+
+        self._robot['k.position'] = new_pos
+        if new_pos == self._dest:
             return self.event_done()
-        self._robot['k.position'] += vdist.normalized()*distance
         return None
 
 class AcTurn(Action):

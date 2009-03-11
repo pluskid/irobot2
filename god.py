@@ -35,6 +35,17 @@ class God(object):
     def add_animation(self, animation):
         self._gp_animations.add(animation)
 
+    def collision_detect(self, rect, obj):
+        spritecollide = rect.colliderect
+        def cd_group(grps):
+            for grp in grps:
+                for s in grp:
+                    if s != obj and spritecollide(s.rect):
+                        return s
+            return None
+        return cd_group((self._gp_robots, 
+                         self._engine.map.obstacles))
+
     @property
     def engine(self):
         return self._engine

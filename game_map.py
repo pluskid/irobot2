@@ -3,8 +3,9 @@ from   os         import path
 import yaml
 
 from   pygame.sprite import Group
+from   pygame        import Rect
 
-from   sprite import SpObject
+from   sprite import SpObject, SpDummy
 from   util   import vec2d
 
 class GameMap(object):
@@ -28,6 +29,20 @@ class GameMap(object):
                 self._gp_all.add(spobj)
                 if obj['type'] in ['obstacle', 'box']:
                     self._gp_obstacle.add(spobj)
+
+        # make dummy sprites for the walls
+        width  = self._geometry[0]*self._tile_size[0]
+        height = self._geometry[1]*self._tile_size[1]
+        walls = [SpDummy(Rect(-1, 0, 1, height)),
+                 SpDummy(Rect(0, -1, width, 1)),
+                 SpDummy(Rect(width, 0, 1, height)),
+                 SpDummy(Rect(0, height, width, 1))]
+        for wall in walls:
+            self._gp_obstacle.add(wall)
+
+    @property
+    def obstacles(self):
+        return self._gp_obstacle
 
     def render(self, screen):
         screen.blit(self._background, self._background.get_rect())

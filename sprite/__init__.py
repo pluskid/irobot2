@@ -1,5 +1,6 @@
-from robot import SpRobot
+from robot     import SpRobot
 from animation import *
+from dummy     import SpDummy
 
 import pygame
 from   pygame.sprite import Sprite

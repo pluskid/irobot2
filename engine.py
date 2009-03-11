@@ -37,6 +37,10 @@ class Engine(object):
         return self._resmgr.get_images(key, colorkey=colorkey,
                                       basepath=basepath)
 
+    @property
+    def map(self):
+        return self._map
+
     def tick(self):
         return self._clock.tick(self._fps)
 
