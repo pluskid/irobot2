@@ -27,7 +27,7 @@ class GameMap(object):
             for pos in obj['positions']:
                 spobj = SpObject(self.tile2pixel(pos), image)
                 self._gp_all.add(spobj)
-                if obj['type'] in ['obstacle', 'box']:
+                if obj['type'] in ['obstacle', 'box', 'treasure']:
                     self._gp_obstacle.add(spobj)
 
         self._gp_shift_entrance = Group()

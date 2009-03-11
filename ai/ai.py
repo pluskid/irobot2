@@ -1,8 +1,10 @@
+import re
 import threading
 from   threading import Thread
 
 from   exception import IllegalOperation
 from   event     import *
+from   api       import State
 import action
 
 class StateRunner(Thread):
@@ -12,7 +14,7 @@ class StateRunner(Thread):
     def __init__(self, robot, state):
         Thread.__init__(self)
         self._robot = robot
-        self._state = state
+        self._state = state()
         self._stop = False
         self._event = threading.Event()
 
@@ -43,7 +45,7 @@ class StateRunner(Thread):
         loop_func = self._state.loop
         try:
             while True:
-                loop_func(self.run_action)
+                loop_func()
         except StateRunner.Stop:
             pass
 
@@ -80,3 +82,16 @@ class AI(object):
         # TODO: else: event handler of state
 
 
+def parse_module(module):
+    states = {}
+    pat_stname = re.compile(r'St(.*)')
+    for attr in dir(module):
+        mod = getattr(module, attr)
+        res = pat_stname.match(attr)
+        if res is not None and       \
+           isinstance(mod, type) and \
+           issubclass(mod, State):
+            state_name = res.group(1)
+            state = mod
+            states[state_name] = mod
+    return states

@@ -4,6 +4,8 @@ from god    import God
 from robot  import Robot
 from util   import vec2d
 from ai     import connect_states
+from ai     import example
+from ai.ai  import parse_module
 from ai.api import State
 
 god = God('default.ini')
@@ -21,14 +23,7 @@ robot = Robot(rpropos)
 
 
 ## state
-class StGlobal(State):
-    def loop(self, run_action):
-        if randint(0, 1) == 0:
-            run_action('Shift', vec2d(randint(0, 500), randint(0, 500)))
-        else:
-            run_action('MoveTo', vec2d(randint(0, 500), randint(0, 500)))
-
-states = {'Global': StGlobal()}
+states = parse_module(example)
 
 connect_states(robot, states)
 
