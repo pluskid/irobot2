@@ -16,6 +16,9 @@ class StateRunner(Thread):
         self._stop = False
         self._event = threading.Event()
 
+        self._state.run_action = self.run_action
+        self._state.goto_state = self.goto_state
+
     def run_action(self, name, *args):
         if threading.currentThread() is not self:
             raise IllegalOperation('Action can only be run in loop')
@@ -33,8 +36,11 @@ class StateRunner(Thread):
         if self._stop is True:
             raise StateRunner.Stop()
 
+    def goto_state(self, state_name):
+        pass
+
     def run(self):
-        loop_func = self._state['loop']
+        loop_func = self._state.loop
         try:
             while True:
                 loop_func(self.run_action)
@@ -42,8 +48,7 @@ class StateRunner(Thread):
             pass
 
     def start_looping(self):
-        initializer = self._state['initialize']
-        initializer()
+        self._state.initialize()
         self.start()
     def continue_looping(self):
         self._event.set()
@@ -51,8 +56,7 @@ class StateRunner(Thread):
         self._stop = True
         self._event.set()
         self.join()
-        finalizer = self._state['terminate']
-        finalizer()
+        self._state.terminate()
 
 
 class AI(object):
