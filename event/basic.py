@@ -1,20 +1,20 @@
 class Event(object):
     "Base class for all events"
-    pass
+    name = 'k.event'
 
 class EvDeath(Event):
     "Event for a robot death"
-    pass
+    name = 'k.death'
 
 class EvBorn(Event):
     "Event for a robot born"
-    pass
-
-class EvIdle(Event):
-    "Event for idle robot"
-    pass
+    name = 'k.born'
 
 class EvDone(Event):
     "Event for action done"
-    pass
+    name = 'k.done'
+
+class EvIdle(Event):
+    "Event for idle robot"
+    name = 'idle'
 

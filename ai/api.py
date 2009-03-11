@@ -6,7 +6,7 @@ class State(object):
     def terminate(self):
         pass
 
-    def handle_event(self, event_name, *args):
-        handle_name = 'on_%s' % event_name
+    def handle_event(self, event):
+        handle_name = 'on_%s' % event.name
         if hasattr(self, handle_name):
-            getattr(self, handle_name)(*args)
+            return getattr(self, handle_name)(event)

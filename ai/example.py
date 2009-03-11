@@ -8,4 +8,4 @@ class StGlobal(State):
         self.run_action('MoveTo', vec2d(randint(0, 500), randint(0, 500)))
         
     def on_collide(self, event):
-        self.goto_state('Global')
+        return 'Global'

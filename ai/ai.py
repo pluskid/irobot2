@@ -72,14 +72,20 @@ class AI(object):
         if isinstance(event, EvBorn):
             self._robot['k.alive'] = True
             self._state_runner = StateRunner(self._robot, 
-                    self._states['Global'])
+                                             self._states['Global'])
             self._state_runner.start_looping()
         elif isinstance(event, EvDeath):
             self._robot['k.alive'] = False
             self._state_runner.terminate_looping()
         elif isinstance(event, EvDone):
             self._state_runner.continue_looping()
-        # TODO: else: event handler of state
+        else:
+            new_state = self._state_runner._state.handle_event(event)
+            if new_state is not None:
+                self._state_runner.terminate_looping()
+                self._state_runner = StateRunner(self._robot,
+                                                 self._states[new_state])
+                self._state_runner.start_looping()
 
 
 def parse_module(module):
