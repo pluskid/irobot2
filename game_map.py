@@ -30,6 +30,29 @@ class GameMap(object):
                 if obj['type'] in ['obstacle', 'box']:
                     self._gp_obstacle.add(spobj)
 
+        self._gp_shift_entrance = Group()
+        self._shifts = []
+        if info.has_key('shifts'):
+            for shift in info['shifts']:
+                sexit = shift['exit']
+                sexit_objs = []
+                image = resmgr.get_image(sexit['image'], basepath=img_path)
+                for pos in sexit['positions']:
+                    spobj = SpObject(self.tile2pixel(pos), image)
+                    sexit_objs.append(spobj)
+                    self._gp_all.add(spobj)
+                    
+                entrance = shift['entrance']
+                image = resmgr.get_image(entrance['image'], basepath=img_path)
+                for pos in entrance['positions']:
+                    spobj = SpObject(self.tile2pixel(pos), image)
+                    spobj.shift_exits = sexit_objs
+                    self._gp_all.add(spobj)
+                    self._gp_shift_entrance.add(spobj)
+
+
+                    
+
         # make dummy sprites for the walls
         width  = self._geometry[0]*self._tile_size[0]
         height = self._geometry[1]*self._tile_size[1]

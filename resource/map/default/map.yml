@@ -24,7 +24,14 @@ objects:
         - [12, 3]
         - [13, 3]
         - [14, 3]
-
+    -
+      type: obstacle
+      image: obstacle-4
+      positions:
+        - [14, 10]
+        - [15, 10]
+        - [14, 11]
+        - [15, 11]
     -
       type: box
       image: box-1
@@ -54,4 +61,35 @@ objects:
       positions:
         - [16, 6]
         - [7, 10]
+    -
+      type: treasure
+      image: treasure-1
+      positions:
+        - [2, 5]
+        - [13, 6]
+        - [14, 6]
+    -
+      type: treasure
+      image: treasure-2
+      positions:
+        - [5, 2]
+        - [5, 3]
+    -
+      type: treasure
+      image: treasure-3
+      positions:
+        - [16, 5]
+        - [15, 9]
+shifts:
+    -
+      entrance:
+        image: shift-entrance
+        positions:
+            - [7, 6]
+      exit:
+        image: shift-exit
+        positions:
+            - [2, 3]
+            - [3, 9]
+            - [17, 11]
 
