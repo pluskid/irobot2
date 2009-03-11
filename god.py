@@ -23,7 +23,7 @@ class God(object):
     def add_robot(self, robot):
         robot_id = '%s.%s' % (robot['k.team'], robot['k.name'])
         self._robots[robot_id] = robot
-        sprite = SpRobot(robot, self._engine.get_image('tank'))
+        sprite = SpRobot(robot, self._engine.get_image('tank', colorkey=-1))
         robot['k.sprite'] = sprite
         self._gp_robots.add(sprite)
 

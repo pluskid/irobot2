@@ -2,6 +2,7 @@ import pygame
 from   pygame.locals import *
 
 from resource import ResourceManager
+from game_map import GameMap
 
 class Engine(object):
     def __init__(self, config):
@@ -17,18 +18,24 @@ class Engine(object):
             flag = DOUBLEBUF | FULLSCREEN | HWSURFACE
         else:
             flag = DOUBLEBUF
-
         pygame.init()
         self._screen = pygame.display.set_mode(
                 (self._width, self._height), flag)
         self._clock = pygame.time.Clock()
 
+        if config.has_option('game', 'map'):
+            self._map = GameMap(self._resmgr, config.get('game', 'map'))
+        else:
+            self._map = GameMap(self._resmgr)
+
         self._groups = []
 
-    def get_image(self, key, colorkey=-1):
-        return self._resmgr.get_image(key, colorkey=colorkey)
-    def get_images(self, key, colorkey=-1):
-        return self._resmgr.get_images(key, colorkey=colorkey)
+    def get_image(self, key, colorkey='alpha', basepath=None):
+        return self._resmgr.get_image(key, colorkey=colorkey,
+                                     basepath=basepath)
+    def get_images(self, key, colorkey='alpha', basepath=None):
+        return self._resmgr.get_images(key, colorkey=colorkey,
+                                      basepath=basepath)
 
     def tick(self):
         return self._clock.tick(self._fps)
@@ -37,15 +44,7 @@ class Engine(object):
         self._groups.append(group)
 
     def render(self):
-        # draw backgrounds
-        bg = self._resmgr.get_image('background', colorkey=None)
-        bg_rect = bg.get_rect()
-        nrows = int(self._screen.get_height() / bg_rect.height)+1
-        ncols = int(self._screen.get_width() / bg_rect.width)+1
-        for y in range(nrows):
-            for x in range(ncols):
-                bg_rect.topleft = (x*bg_rect.width, y*bg_rect.height)
-                self._screen.blit(bg, bg_rect)
+        self._map.render(self._screen)
 
         for grp in self._groups:
             grp.update()

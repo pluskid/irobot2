@@ -8,21 +8,24 @@ class ResourceManager(object):
     def __init__(self):
         self._res = dict()
 
-    def get_image(self, key, colorkey=-1):
-        realkey = 'image.%s' % key
+    def get_image(self, key, colorkey='alpha', basepath=None):
+        if basepath is None:
+            basepath = path.join(path.dirname(__file__), 'image')
+        realkey = 'image.%s.%s' % (basepath, key)
         image = self._res.get(realkey)
         if image is None:
-            fn = path.join(path.dirname(__file__), 'image',
-                    '%s.png' % key)
+            fn = path.join(basepath, '%s.png' % key)
             image = self.load_image(fn, colorkey)
             self._res[realkey] = image
         return image
 
-    def get_images(self, key, colorkey=-1):
-        realkey = 'images.%s' % key
+    def get_images(self, key, colorkey='alpha', basepath=None):
+        if basepath is None:
+            basepath = path.join(path.dirname(__file__), 'image')
+        realkey = 'images.%s.%s' % (basepath, key)
         images = self._res.get(realkey)
         if images is None:
-            img_dir = path.join(path.dirname(__file__), 'image', key)
+            img_dir = path.join(basepath, key)
             fns = os.listdir(img_dir)
             fns.sort()
             images = [self.load_image(path.join(img_dir, fn), colorkey) 

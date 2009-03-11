@@ -1,0 +1,57 @@
+info:
+    tile_size: [52, 52]
+    geometry: [19, 13]
+objects:
+    - 
+      type: obstacle
+      image: obstacle-1
+      positions:
+        - [4, 1]
+        - [4, 2]
+        - [4, 3]
+        - [4, 4]
+        - [3, 5]
+    -
+      type: obstacle
+      image: obstacle-2
+      positions:
+        - [4, 5]
+        - [3, 6]
+    -
+      type: obstacle
+      image: obstacle-3
+      positions:
+        - [12, 3]
+        - [13, 3]
+        - [14, 3]
+
+    -
+      type: box
+      image: box-1
+      positions:
+        - [11, 1]
+        - [11, 2]
+        - [10, 5]
+        - [11, 5]
+        - [12, 5]
+        - [13, 5]
+    -
+      type: box
+      image: box-2
+      positions:
+        - [12, 2]
+        - [14, 5]
+        - [7, 9]
+    - 
+      type: box
+      image: box-3
+      positions:
+        - [6, 9]
+        - [15, 6]
+    -
+      type: box
+      image: box-4
+      positions:
+        - [16, 6]
+        - [7, 10]
+
