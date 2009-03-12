@@ -7,14 +7,10 @@ from game_map import GameMap
 class Engine(object):
     def __init__(self, config):
         self._resmgr = ResourceManager()
-        self._fps = config.getint('engine', 'fps')
-        self._width = config.getint('engine', 'width')
-        self._height = config.getint('engine', 'height')
-        fullscreen = False
-        if config.has_option('engine', 'fullscreen'):
-            if config.get('engine', 'fullscreen') in ('True', 'true', '1'):
-                fullscreen = True
-        if fullscreen:
+        self._fps = config['fps']
+        self._width = config['width']
+        self._height = config['height']
+        if config['fullscreen']:
             flag = DOUBLEBUF | FULLSCREEN | HWSURFACE
         else:
             flag = DOUBLEBUF
@@ -23,8 +19,8 @@ class Engine(object):
                 (self._width, self._height), flag)
         self._clock = pygame.time.Clock()
 
-        if config.has_option('game', 'map'):
-            self._map = GameMap(self._resmgr, config.get('game', 'map'))
+        if config.has_key('map'):
+            self._map = GameMap(self._resmgr, config['map'])
         else:
             self._map = GameMap(self._resmgr)
 

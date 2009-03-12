@@ -1,9 +1,10 @@
-from pygame.sprite import Sprite
+from basic import SpBase
 
-class SpDummy(Sprite):
+class SpDummy(SpBase):
+    """Only rect property for collision detection,
+    no image property so that nothing will show on
+    screen.
+    """
     def __init__(self, rect):
-        Sprite.__init__(self)
+        SpBase.__init__(self)
         self.rect = rect
-
-    def draw(self):
-        pass

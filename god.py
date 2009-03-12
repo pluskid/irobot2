@@ -1,5 +1,4 @@
 import sys
-from   ConfigParser  import ConfigParser
 import pygame
 from   pygame.locals import *
 from   pygame.sprite import Group
@@ -9,11 +8,10 @@ from   engine   import Engine
 from   event    import *
 
 class God(object):
-    def __init__(self, cfg_file):
-        self._config = ConfigParser()
-        self._config.read(cfg_file)
+    def __init__(self, config):
+        self._config = config
         self._robots = dict()
-        self._engine = Engine(self._config)
+        self._engine = Engine(self._config['engine'])
 
         self._gp_robots = Group()
         self._gp_animations = Group()
@@ -37,9 +35,9 @@ class God(object):
         sprite = SpShoot(image, sprobot, position, direction, 0.3)
         self._gp_shoots.add(sprite)
 
-    def create_explosion(self, position):
+    def create_explosion(self, shoot, target):
         images = self._engine.get_images('explode-small')
-        explode = SpAnimation(position, images)
+        explode = SpAnimation(shoot._position, images)
         self._gp_animations.add(explode)
 
 

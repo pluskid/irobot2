@@ -1,11 +1,11 @@
 import pygame
-from   pygame.sprite import Sprite
 
-from util import vec2d
+from util  import vec2d
+from basic import SpBase
 
-class SpRobot(Sprite):
+class SpRobot(SpBase):
     def __init__(self, robot, image):
-        Sprite.__init__(self)
+        SpBase.__init__(self)
         self._robot = robot
         self._base_image = image
         self.rotate_image()

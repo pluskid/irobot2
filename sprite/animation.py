@@ -1,13 +1,11 @@
-import pygame
-from   pygame.sprite import Sprite
-
-from util import vec2d
+from util  import vec2d
+from basic import SpBase
 
 __all__ = ['SpAnimation', 'SpMovingAnimation']
 
-class SpAnimation(Sprite):
+class SpAnimation(SpBase):
     def __init__(self, position, images, delay=1):
-        Sprite.__init__(self)
+        SpBase.__init__(self)
         self._position = position
         self._images = images
         self._cursor = -1
