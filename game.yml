@@ -4,3 +4,10 @@ engine:
     fps: 50
     fullscreen: false
 
+setting:
+    shoots:
+        normal:
+            speed:  0.5
+            image:  shoot-1
+            damage: 10
+            cp:     10
