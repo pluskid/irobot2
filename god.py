@@ -36,11 +36,14 @@ class God(object):
         sprite = SpShoot(image, sprobot, position, direction, sconfig)
         self._gp_shoots.add(sprite)
 
-    def create_explosion(self, shoot, target, damage):
-        images = self._engine.get_images('explode-small')
-        explode = SpAnimation(shoot._position, images)
+    def create_explosion(self, position, target, damage):
+        self.create_explosion_animation(position, 'explode-small')
+        target.hurt(damage, self)
+
+    def create_explosion_animation(self, position, exp_type):
+        images = self._engine.get_images(exp_type)
+        explode = SpAnimation(position, images)
         self._gp_animations.add(explode)
-        target.damage(damage)
 
     def collision_detect(self, rect, objs):
         spritecollide = rect.colliderect

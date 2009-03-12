@@ -18,7 +18,7 @@ class SpShoot(SpBase):
         target = god.collision_detect(self.rect, (self, self._sprobot))
         if target is not None:
             self.kill()
-            god.create_explosion(self, target, self._config['damage'])
+            god.create_explosion(self._position, target, self._config['damage'])
 
     def update(self):
         self.rect.center = self._position

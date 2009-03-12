@@ -1,6 +1,10 @@
 info:
     tile_size: [52, 52]
     geometry: [19, 13]
+    hp:
+        box: 100
+        treasure: 150
+        obstacle: inf
 objects:
     - 
       type: obstacle
