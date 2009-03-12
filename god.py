@@ -17,8 +17,10 @@ class God(object):
 
         self._gp_robots = Group()
         self._gp_animations = Group()
+        self._gp_shoots = Group()
         self._engine.add_group(self._gp_robots)
         self._engine.add_group(self._gp_animations)
+        self._engine.add_group(self._gp_shoots)
 
     def add_robot(self, robot):
         robot_id = '%s.%s' % (robot['k.team'], robot['k.name'])
@@ -27,20 +29,26 @@ class God(object):
         robot['k.sprite'] = sprite
         self._gp_robots.add(sprite)
 
-        # TEST CODE
-        images = self._engine.get_images('magic-small', colorkey='alpha')
-        explode = SpMovingAnimation(robot, images)
-        self._gp_animations.add(explode)
-
     def add_animation(self, animation):
         self._gp_animations.add(animation)
 
-    def collision_detect(self, rect, obj):
+    def create_shoot(self, position, direction, sprobot):
+        image = self._engine.get_image('shoot-1')
+        sprite = SpShoot(image, sprobot, position, direction, 0.3)
+        self._gp_shoots.add(sprite)
+
+    def create_explosion(self, position):
+        images = self._engine.get_images('explode-small')
+        explode = SpAnimation(position, images)
+        self._gp_animations.add(explode)
+
+
+    def collision_detect(self, rect, objs):
         spritecollide = rect.colliderect
         def cd_group(grps):
             for grp in grps:
                 for s in grp:
-                    if s != obj and spritecollide(s.rect):
+                    if (not s in objs) and spritecollide(s.rect):
                         return s
             return None
         return cd_group((self._gp_robots, 
@@ -59,6 +67,9 @@ class God(object):
                     sys.exit()
 
             time_passed = self._engine.tick()
+            for shoot in self._gp_shoots:
+                shoot.step(self, time_passed)
+
             all_dead = True
             for robot in self._robots.itervalues():
                 if robot['k.alive'] == True:

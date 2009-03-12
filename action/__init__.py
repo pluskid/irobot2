@@ -1,1 +1,2 @@
-from move import *
+from move  import *
+from shoot import *
