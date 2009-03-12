@@ -19,7 +19,7 @@ class Engine(object):
                 (self._width, self._height), flag)
         self._clock = pygame.time.Clock()
 
-        if config.has_key('map'):
+        if config.get('map'):
             self._map = GameMap(self._resmgr, config['map'])
         else:
             self._map = GameMap(self._resmgr)

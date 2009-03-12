@@ -59,12 +59,22 @@ class God(object):
     def start(self):
         for robot in self._robots.itervalues():
             self.robot_born(robot)
+
+        paused = False
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     sys.exit()
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        sys.exit()
+                    elif event.key == K_SPACE:
+                        paused = not paused
 
             time_passed = self._engine.tick()
+            if paused:
+                continue
+
             for shoot in self._gp_shoots:
                 shoot.step(self, time_passed)
 
