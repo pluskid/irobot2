@@ -23,8 +23,7 @@ class ShootAction(AIAction):
         return robot['k.cp'] >= config['cp']
 
     def make_action(self, robot):
-        # TODO: consider strike of robot
-        return AcShoot(robot, self._stype)
+        return AcShoot(robot, self._stype, robot['k.strike'])
 
 all_actions = {
         'MoveTo': MoveToAction(),

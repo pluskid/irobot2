@@ -54,10 +54,11 @@ class God(object):
     def add_animation(self, animation):
         self._gp_animations.add(animation)
 
-    def create_shoot(self, position, direction, sprobot, stype):
+    def create_shoot(self, position, direction, sprobot, stype, strike):
         sconfig = self._config['setting']['shoots'][stype]
         image = self._engine.get_image(sconfig['image'])
-        sprite = SpShoot(image, sprobot, position, direction, sconfig)
+        sprite = SpShoot(image, sprobot, position, direction, 
+                         sconfig, strike)
         self._gp_shoots.add(sprite)
 
     def create_explosion(self, position, target, damage):
