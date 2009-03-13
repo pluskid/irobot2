@@ -65,12 +65,10 @@ class AI(object):
 
     def process_event(self, event):
         if isinstance(event, EvBorn):
-            self._robot['k.alive'] = True
             self._state_runner = StateRunner(self._robot, 
                                              self._states['Global'])
             self._state_runner.start_looping()
         elif isinstance(event, EvDeath):
-            self._robot['k.alive'] = False
             self._state_runner.terminate_looping()
         elif isinstance(event, EvDone):
             self._state_runner.continue_looping()

@@ -4,6 +4,6 @@ class AcNop(Action):
     """\
     Do nothing.
     """
-    def update(self):
+    def update(self, god, intv):
         return self.event_done()
 

@@ -10,7 +10,11 @@ class SpBase(Sprite):
     def hurt(self, damage, god):
         self.hp -= damage
         if self.hp <= 0:
-            god.create_explosion_animation(vec2d(self.rect.center),
-                                           'explode-large')
-            self.kill()
+            self.die(god)
+
+    def die(self, god):
+        god.create_explosion_animation(vec2d(self.rect.center),
+                                       'explode-large')
+        self.kill()
+
 

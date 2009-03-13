@@ -18,12 +18,17 @@ class ShootAction(AIAction):
         self._stype = stype
 
     def allow_action(self, robot):
-        god = robot['k.god']
-        config = god.config['setting']['shoots'][self._stype]
-        return robot['k.cp'] >= config['cp']
+        return robot['k.cp'] >= self.required_cp(robot)
 
     def make_action(self, robot):
+        robot['k.cp'] -= self.required_cp(robot)
         return AcShoot(robot, self._stype, robot['k.strike'])
+
+    def required_cp(self, robot):
+        god = robot['k.god']
+        config = god.config['setting']['shoots'][self._stype]
+        return config['cp']
+
 
 all_actions = {
         'MoveTo': MoveToAction(),

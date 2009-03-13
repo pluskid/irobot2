@@ -33,6 +33,6 @@ setting:
             angle_speed: 0.2
             hp: 1000
             cp: 1000
-            strike: 2
+            strike: 1000
             defend: 0.4
             image: robot-4

@@ -111,6 +111,8 @@ class God(object):
             for shoot in self._gp_shoots:
                 shoot.step(self, time_passed)
 
+            # TODO: terminate the game when all
+            # robot of one team is dead
             all_dead = True
             for robot in self._robots.itervalues():
                 if robot['k.alive'] == True:
@@ -122,9 +124,11 @@ class God(object):
             self._engine.render()
 
     def robot_born(self, robot):
+        robot['k.alive'] = True
         robot.event(EvBorn())
         robot.start()
     def robot_die(self, robot):
+        robot['k.alive'] = False
         robot.event(EvDeath())
         
     def perform_action(self, robot, time_passed):
