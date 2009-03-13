@@ -13,6 +13,9 @@ from   util      import DictObj, vec2d
 class StateRunner(Thread):
     class Stop(Exception):
         pass
+    public_props = ['type', 'team', 'name', 'direction', 'position',
+                    'speed', 'angle_speed', 'strike', 'defend', 'sight',
+                    'hp', 'cp']
 
     def __init__(self, robot, state):
         Thread.__init__(self)
@@ -27,6 +30,13 @@ class StateRunner(Thread):
         self._state.elem_size   = self.elem_size
         self._state.grid2point  = self.grid2point
         self._state.look_around = self.look_around
+
+        def set_prop_getter(name):
+            setattr(self._state, 'get_%s'%name,
+                    lambda: self._robot['k.%s'%name])
+        for prop in StateRunner.public_props:
+            set_prop_getter(prop)
+
 
     def run_action(self, name, *args):
         if threading.currentThread() is not self:
@@ -52,10 +62,7 @@ class StateRunner(Thread):
         # do what ever it want to, e.g. sprite._robot['k.hp'] = 0
         robot = sprite._robot
         info = DictObj()
-        props = ['type', 'team', 'name', 'direction', 'position',
-                 'speed', 'angle_speed', 'strike', 'defend', 'sight',
-                 'hp', 'cp']
-        for prop in props:
+        for prop in StateRunner.public_props:
             info[prop] = robot['k.%s'%prop]
         return info
 

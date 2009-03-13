@@ -1,4 +1,6 @@
-from basic import Action
+from basic   import Action
+from move    import AcTurn
+from compose import SequenceAction
 
 class AcShoot(Action):
     def __init__(self, robot, stype, strike):
@@ -15,4 +17,14 @@ class AcShoot(Action):
                          self._robot['k.sprite'], 
                          self._stype, self._strike)
         return self.event_done()
-        
+
+class AcShootAt(Action):
+    def __init__(self, robot, dest, stype, strike):
+        Action.__init__(self, robot)
+        aturn  = AcTurn(robot, dest-robot['k.position'])
+        ashoot = AcShoot(robot, stype, strike)
+        self._action = SequenceAction(robot, [aturn, ashoot])
+
+    def update(self, god, intv):
+        return self._action.update(god, intv)
+

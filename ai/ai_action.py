@@ -13,16 +13,16 @@ class MoveToAction(AIAction):
     def make_action(self, robot, dest):
         return AcMoveTo(robot, dest)
 
-class ShootAction(AIAction):
+class ShootAtAction(AIAction):
     def __init__(self, stype):
         self._stype = stype
 
-    def allow_action(self, robot):
+    def allow_action(self, robot, dest):
         return robot['k.cp'] >= self.required_cp(robot)
 
-    def make_action(self, robot):
+    def make_action(self, robot, dest):
         robot['k.cp'] -= self.required_cp(robot)
-        return AcShoot(robot, self._stype, robot['k.strike'])
+        return AcShootAt(robot, dest, self._stype, robot['k.strike'])
 
     def required_cp(self, robot):
         god = robot['k.god']
@@ -32,7 +32,7 @@ class ShootAction(AIAction):
 
 all_actions = {
         'MoveTo': MoveToAction(),
-        'Shoot': ShootAction('normal')
+        'ShootAt': ShootAtAction('normal')
         }
 
 def perform_action(name, robot, *args):

@@ -72,12 +72,13 @@ class God(object):
         self._gp_animations.add(explode)
 
     def robot_look_around(self, robot):
-        rect = Rect(robot['k.sight'], robot['k.sight'])
+        rect = Rect(0, 0, robot['k.sight'], robot['k.sight'])
         rect.center = robot['k.position']
         spritecollide = rect.colliderect
+        sprite = robot['k.sprite']
         targets = []
         for s in self._gp_robots:
-            if s != robot and spritecollide(s.rect):
+            if s != sprite and spritecollide(s.rect):
                 targets.append(s)
         return targets
 
