@@ -41,6 +41,7 @@ class God(object):
                 'k.angle_speed': config['angle_speed'],
                 'k.strike': config['strike'],
                 'k.defend': config['defend'],
+                'k.sight': config['sight'],
                 'k.hp': config['hp'],
                 'k.cp': config['cp']
                 }
@@ -70,6 +71,16 @@ class God(object):
         explode = SpAnimation(position, images)
         self._gp_animations.add(explode)
 
+    def robot_look_around(self, robot):
+        rect = Rect(robot['k.sight'], robot['k.sight'])
+        rect.center = robot['k.position']
+        spritecollide = rect.colliderect
+        targets = []
+        for s in self._gp_robots:
+            if s != robot and spritecollide(s.rect):
+                targets.append(s)
+        return targets
+
     def collision_detect(self, rect, objs):
         spritecollide = rect.colliderect
         def cd_group(grps):
@@ -80,6 +91,10 @@ class God(object):
             return None
         return cd_group((self._gp_robots, 
                          self._engine.map.obstacles))
+
+    @property
+    def game_map(self):
+        return self._engine.map
 
     @property
     def config(self):

@@ -2,10 +2,13 @@ import re
 import threading
 from   threading import Thread
 
+from   pygame    import Rect
+
 from   exception import IllegalOperation
 from   event     import *
 from   api       import State
 from   ai_action import perform_action
+from   util      import DictObj, vec2d
 
 class StateRunner(Thread):
     class Stop(Exception):
@@ -18,8 +21,12 @@ class StateRunner(Thread):
         self._stop = False
         self._event = threading.Event()
 
-        self._state.run_action = self.run_action
-        self._state.goto_state = self.goto_state
+        self._state.run_action  = self.run_action
+        self._state.map_size    = self.map_size
+        self._state.map_elem    = self.map_elem
+        self._state.elem_size   = self.elem_size
+        self._state.grid2point  = self.grid2point
+        self._state.look_around = self.look_around
 
     def run_action(self, name, *args):
         if threading.currentThread() is not self:
@@ -33,8 +40,66 @@ class StateRunner(Thread):
         if self._stop is True:
             raise StateRunner.Stop()
 
-    def goto_state(self, state_name):
-        pass
+    def look_around(self):
+        sprites = self._robot['k.god'].robot_look_around(self._robot)
+        robots = [self.collect_robot_info(r) for r in sprites]
+        return robots
+    def collect_robot_info(self, sprite):
+        # We collect thise information here instead of return 
+        # the sprite directly or wrap it as a proxy to generate
+        # those information lazily because we will not allow the
+        # AI to access the sprite object direct. Or else, it can
+        # do what ever it want to, e.g. sprite._robot['k.hp'] = 0
+        robot = sprite._robot
+        info = DictObj()
+        props = ['type', 'team', 'name', 'direction', 'position',
+                 'speed', 'angle_speed', 'strike', 'defend', 'sight',
+                 'hp', 'cp']
+        for prop in props:
+            info[prop] = robot['k.%s'%prop]
+        return info
+
+    def grid2point(self, grid, pos='center'):
+        """\
+        From grid coordinate to point coordinate.
+
+         - grid: can either be a 2-tuple or vec2d or similar
+         - pos: 'center' to return the center of the grid
+                'top-left' to return the top-left point
+        """
+        grid_size = self.elem_size()
+        x = grid[0]*grid_size[0]
+        y = grid[1]*grid_size[1]
+        if pos == 'center':
+            x += grid_size[0]/2
+            y += grid_size[1]/2
+        return vec2d(x, y)
+
+    def elem_size(self):
+        map = self.game_map
+        return map.tile_size
+    def map_size(self):
+        map = self.game_map
+        return map.geometry
+    def map_elem(self, x, y):
+        map = self.game_map
+        try:
+            elem = map[x, y]
+            if elem is None:
+                return DictObj({'type': 'empty'})
+            elif elem.type in ['box', 'treasure']:
+                return DictObj({'type': elem.type, 'hp': elem.hp})
+            elif elem.type == 'obstacle':
+                return DictObj({'type': elem.type})
+            
+        except IndexError:
+            return DictObj({'type': 'obstacle'})
+        
+
+    @property
+    def game_map(self):
+        god = self._robot['k.god']
+        return god.game_map
 
     def run(self):
         loop_func = self._state.loop

@@ -28,6 +28,7 @@ class GameMap(object):
             for pos in obj['positions']:
                 spobj = SpObject(self.tile2pixel(pos), image)
                 spobj.hp = float(info['info']['hp'][obj['type']])
+                spobj.type = obj['type']
                 self._gp_all.add(spobj)
                 self._grid[pos[0]][pos[1]] = spobj
                 if obj['type'] in ['obstacle', 'box', 'treasure']:
@@ -39,14 +40,16 @@ class GameMap(object):
             for shift in info['shifts']:
                 sexit = shift['exit']
                 sexit_objs = []
-                image = resmgr.get_image(sexit['image'], basepath=img_path)
+                image = resmgr.get_image(sexit['image'], 
+                                         basepath=img_path)
                 for pos in sexit['positions']:
                     spobj = SpObject(self.tile2pixel(pos), image)
                     sexit_objs.append(spobj)
                     self._gp_all.add(spobj)
                     
                 entrance = shift['entrance']
-                image = resmgr.get_image(entrance['image'], basepath=img_path)
+                image = resmgr.get_image(entrance['image'], 
+                                         basepath=img_path)
                 for pos in entrance['positions']:
                     spobj = SpObject(self.tile2pixel(pos), image)
                     spobj.shift_exits = sexit_objs
@@ -65,6 +68,17 @@ class GameMap(object):
                  SpDummy(Rect(0, height, width, 1))]
         for wall in walls:
             self._gp_obstacle.add(wall)
+
+    def __getitem__(self, pos):
+        return self._grid[pos[0]][pos[1]]
+
+    @property
+    def tile_size(self):
+        return self._tile_size
+
+    @property
+    def geometry(self):
+        return self._geometry
 
     @property
     def obstacles(self):

@@ -13,26 +13,29 @@ setting:
             cp:     10
     robots:
         wasp:
-            speed: 0.2
+            speed:       0.2
             angle_speed: 0.4
-            hp: 500
-            cp: 500
-            strike: 0.8
-            defend: 0.15
-            image: robot-1
+            hp:          500
+            cp:          500
+            sight:       200
+            strike:      0.8
+            defend:      0.15
+            image:       robot-1
         ruby:
-            speed: 0.3
+            speed:       0.3
             angle_speed: 0.5
-            hp: 500
-            cp: 400
-            strike: 0.6
-            defend: 0.25
-            image: robot-2
+            hp:          500
+            cp:          400
+            sight:       200
+            strike:      0.6
+            defend:      0.25
+            image:       robot-2
         apache_II:
-            speed: 0.1
+            speed:       0.1
             angle_speed: 0.2
-            hp: 1000
-            cp: 1000
-            strike: 1000
-            defend: 0.4
-            image: robot-4
+            hp:          1000
+            cp:          1000
+            sight:       120
+            strike:      1000
+            defend:      0.4
+            image:       robot-4
