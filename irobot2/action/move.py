@@ -1,8 +1,8 @@
-from basic   import Action
-from compose import SequenceAction
-from util    import *
-from sprite  import SpAnimation
-from event   import EvCollide
+from .basic   import Action
+from .compose import SequenceAction
+from ..util   import *
+from ..sprite import SpAnimation
+from ..event  import EvCollide
 
 __all__ = ['AcMove', 'AcTurn', 'AcMoveTo', 'AcAppear', 
            'AcDisappear', 'AcShift']

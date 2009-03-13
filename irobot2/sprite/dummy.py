@@ -1,4 +1,4 @@
-from basic import SpBase
+from .basic import SpBase
 
 class SpDummy(SpBase):
     """Only rect property for collision detection,

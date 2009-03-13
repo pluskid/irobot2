@@ -1,7 +1,7 @@
 import pygame
 
-from util  import vec2d
-from basic import SpBase
+from .basic import SpBase
+from ..util  import vec2d
 
 class SpRobot(SpBase):
     def __init__(self, robot, image):

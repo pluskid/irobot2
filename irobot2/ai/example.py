@@ -1,7 +1,7 @@
 from random import randint
 
-from api  import State
-from util import vec2d
+from .api   import State
+from ..util import vec2d
 
 class StGlobal(State):
     def loop(self):

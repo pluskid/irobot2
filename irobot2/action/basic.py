@@ -1,4 +1,4 @@
-from event import EvDone
+from ..event import EvDone
 
 class Action(object):
     """\

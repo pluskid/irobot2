@@ -1,6 +1,6 @@
 from pygame.sprite import Sprite
 
-from util import vec2d
+from ..util import vec2d
 
 class SpBase(Sprite):
     def __init__(self):

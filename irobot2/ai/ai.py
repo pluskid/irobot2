@@ -1,14 +1,14 @@
 import re
 import threading
-from   threading import Thread
+from   threading   import Thread
 
-from   pygame    import Rect
+from   pygame      import Rect
 
-from   exception import IllegalOperation
-from   event     import *
-from   api       import State
-from   ai_action import perform_action
-from   util      import DictObj, vec2d
+from   .ai_action  import perform_action
+from   .api        import State
+from   ..exception import IllegalOperation
+from   ..event     import *
+from   ..util      import DictObj, vec2d
 
 class StateRunner(Thread):
     class Stop(Exception):

@@ -1,5 +1,5 @@
-from action    import *
-from exception import IllegalOperation
+from ..action    import *
+from ..exception import IllegalOperation
 
 __all__ = ['perform_action']
 

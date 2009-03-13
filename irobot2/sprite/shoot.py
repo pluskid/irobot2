@@ -1,5 +1,5 @@
-from util  import vec2d
-from basic import SpBase
+from .basic import SpBase
+from ..util  import vec2d
 
 class SpShoot(SpBase):
     def __init__(self, image, sprobot, position, 

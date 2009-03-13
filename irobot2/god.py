@@ -3,11 +3,11 @@ import pygame
 from   pygame.locals import *
 from   pygame.sprite import Group
 
-from   sprite    import *
-from   engine    import Engine
-from   event     import *
-from   exception import *
-from   robot     import Robot
+from   .sprite    import *
+from   .engine    import Engine
+from   .event     import *
+from   .exception import *
+from   .robot     import Robot
 
 class God(object):
     def __init__(self, config):

@@ -1,5 +1,5 @@
-from util  import vec2d
-from basic import SpBase
+from ..util import vec2d
+from .basic import SpBase
 
 __all__ = ['SpAnimation', 'SpMovingAnimation']
 

@@ -5,8 +5,8 @@ import yaml
 from   pygame.sprite import Group
 from   pygame        import Rect
 
-from   sprite import SpObject, SpDummy
-from   util   import vec2d
+from   .sprite import SpObject, SpDummy
+from   .util   import vec2d
 
 class GameMap(object):
     def __init__(self, resmgr, map_path=None):

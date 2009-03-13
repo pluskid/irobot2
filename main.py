@@ -3,13 +3,13 @@ from   random     import randint
 
 import yaml
 
-from   god        import God
-from   robot      import Robot
-from   util       import vec2d
-from   ai         import connect_states
-from   ai         import example
-from   ai.ai      import parse_module
-from   ai.api     import State
+from   irobot2.god    import God
+from   irobot2.robot  import Robot
+from   irobot2.util   import vec2d
+from   irobot2.ai     import connect_states
+from   irobot2.ai     import example
+from   irobot2.ai.ai  import parse_module
+from   irobot2.ai.api import State
 
 with open('game.yml') as ins:
     god = God(yaml.load(ins.read()))

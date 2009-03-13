@@ -2,9 +2,9 @@ from __future__ import with_statement
 from Queue      import Queue
 from threading  import Thread, RLock
 
-from event  import *
-from action import *
-from util   import *
+from .event  import *
+from .action import *
+from .util   import *
 
 class Robot(Thread):
     def __init__(self, props):

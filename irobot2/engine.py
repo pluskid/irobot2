@@ -1,8 +1,8 @@
 import pygame
 from   pygame.locals import *
 
-from resource import ResourceManager
-from game_map import GameMap
+from .resource import ResourceManager
+from .game_map import GameMap
 
 class Engine(object):
     def __init__(self, config):
