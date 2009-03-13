@@ -31,6 +31,7 @@ class StateRunner(Thread):
         self._state.grid2point  = self.grid2point
         self._state.look_around = self.look_around
 
+        # See http://blog.pluskid.org/?p=299
         def set_prop_getter(name):
             setattr(self._state, 'get_%s'%name,
                     lambda: self._robot['k.%s'%name])
