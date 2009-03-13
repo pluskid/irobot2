@@ -18,6 +18,7 @@ class GameMap(object):
             info = yaml.load(ins.read())
         self._tile_size = info['info']['tile_size']
         self._geometry = info['info']['geometry']
+        self._grid = [[None]*self._geometry[1]]*self._geometry[0]
 
         self._gp_all = Group()
         self._gp_obstacle = Group()
@@ -28,6 +29,7 @@ class GameMap(object):
                 spobj = SpObject(self.tile2pixel(pos), image)
                 spobj.hp = float(info['info']['hp'][obj['type']])
                 self._gp_all.add(spobj)
+                self._grid[pos[0]][pos[1]] = spobj
                 if obj['type'] in ['obstacle', 'box', 'treasure']:
                     self._gp_obstacle.add(spobj)
 

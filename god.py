@@ -3,9 +3,11 @@ import pygame
 from   pygame.locals import *
 from   pygame.sprite import Group
 
-from   sprite   import *
-from   engine   import Engine
-from   event    import *
+from   sprite    import *
+from   engine    import Engine
+from   event     import *
+from   exception import *
+from   robot     import Robot
 
 class God(object):
     def __init__(self, config):
@@ -20,12 +22,34 @@ class God(object):
         self._engine.add_group(self._gp_animations)
         self._engine.add_group(self._gp_shoots)
 
-    def add_robot(self, robot):
-        robot_id = '%s.%s' % (robot['k.team'], robot['k.name'])
-        self._robots[robot_id] = robot
-        sprite = SpRobot(robot, self._engine.get_image('robot-2'))
+    def build_robot(self, rtype, team, name):
+        robot_id = '%s.%s' % (team, name)
+        if self._robots.has_key(robot_id):
+            raise ConfigError('Robot %s already exists'%robot_id)
+        try:
+            config = self._config['setting']['robots'][rtype]
+        except KeyError:
+            raise ConfigError('No such robot type: %s'%rtype)
+        rpropos = {
+                'k.type': rtype,
+                'k.god': self,
+                'k.alpha': 255,
+                'k.direction': vec2d(1, 0),
+                'k.team': team,
+                'k.name': name,
+                'k.speed': config['speed'],
+                'k.angle_speed': config['angle_speed'],
+                'k.strike': config['strike'],
+                'k.defend': config['defend'],
+                'k.hp': config['hp'],
+                'k.cp': config['cp']
+                }
+        robot = Robot(rpropos)
+        sprite = SpRobot(robot, self._engine.get_image(config['image']))
         robot['k.sprite'] = sprite
         self._gp_robots.add(sprite)
+        self._robots[robot_id] = robot
+        return robot
 
     def add_animation(self, animation):
         self._gp_animations.add(animation)
@@ -55,6 +79,10 @@ class God(object):
             return None
         return cd_group((self._gp_robots, 
                          self._engine.map.obstacles))
+
+    @property
+    def config(self):
+        return self._config
 
     @property
     def engine(self):

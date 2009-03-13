@@ -5,7 +5,7 @@ from   threading import Thread
 from   exception import IllegalOperation
 from   event     import *
 from   api       import State
-import action
+from   ai_action import perform_action
 
 class StateRunner(Thread):
     class Stop(Exception):
@@ -24,13 +24,8 @@ class StateRunner(Thread):
     def run_action(self, name, *args):
         if threading.currentThread() is not self:
             raise IllegalOperation('Action can only be run in loop')
-        clsname = 'Ac' + name
-        if not hasattr(action, clsname):
-            raise IllegalOperation('No such action: %s' % name)
-        cls = getattr(action, clsname)
-
-        # pass action to robot
-        self._robot['k.action'] = cls(self._robot, *args)
+        # perform action
+        perform_action(name, self._robot, *args)
         # and then wait for action to finish
         self._event.wait()
         self._event.clear()

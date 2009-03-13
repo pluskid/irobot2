@@ -31,4 +31,3 @@ class SpRobot(SpBase):
     def alpha_image(self):
         self._alpha = self._robot['k.alpha']
         self.image.set_alpha(self._alpha)
-        pygame.draw.rect(self.image, (255, 0, 0), self.image.get_rect(), 1)

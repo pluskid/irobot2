@@ -10,6 +10,7 @@ class AcShoot(Action):
         direction = self._robot['k.direction']
         width = self._robot['k.sprite']._base_image.get_rect().width
         shoot_pos = position+direction.normalized()*(width/2)
-        god.create_shoot(shoot_pos, direction, self._robot['k.sprite'], self._stype)
+        god.create_shoot(shoot_pos, direction,
+                         self._robot['k.sprite'], self._stype)
         return self.event_done()
         

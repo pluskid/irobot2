@@ -14,24 +14,17 @@ from   ai.api     import State
 with open('game.yml') as ins:
     god = God(yaml.load(ins.read()))
 
-rpropos = {
-        'k.position': vec2d(500, 400),
-        'k.direction': vec2d(1, 0),
-        'k.alpha': 255,
-        'k.team': 'kid',
-        'k.name': 'Apache',
-        'k.speed': 0.1,
-        'k.angle_speed': 0.3,
-        'k.hp': 500
-        }
-robot = Robot(rpropos)
+robot1 = god.build_robot('wasp', 'kid', 'Apache')
+robot1['k.position'] = vec2d(500, 400)
 
+robot2 = god.build_robot('apache_II', 'kid', 'Ruby')
+robot2['k.position'] = vec2d(300, 300)
 
 ## state
 states = parse_module(example)
 
-connect_states(robot, states)
+connect_states(robot1, states)
+connect_states(robot2, states)
 
-god.add_robot(robot)
 god.start()
 
