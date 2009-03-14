@@ -33,7 +33,7 @@ class SpRobot(SpBase):
         self.image.set_alpha(self._alpha)
 
     def hurt(self, damage, god):
-        damage -= damage*min(1, self._robot['k.defend'])
+        damage -= damage*self._robot['k.defend']
         self._robot['k.hp'] -= damage
         if self._robot['k.hp'] <= 0:
             self.die(god)

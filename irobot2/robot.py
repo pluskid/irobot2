@@ -1,11 +1,11 @@
 from __future__ import with_statement
-from Queue      import Queue
+from util       import PriorityQueue
 from threading  import Thread, RLock
 
 class Robot(Thread):
     def __init__(self, props):
         Thread.__init__(self)
-        self._queue = Queue()
+        self._queue = PriorityQueue()
         self._lock  = RLock()
         self._props = dict(props)
         self._ai = None
