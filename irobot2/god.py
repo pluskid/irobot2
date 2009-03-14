@@ -3,11 +3,12 @@ import pygame
 from   pygame.locals import *
 from   pygame.sprite import Group
 
-from   .sprite    import *
+from   .sprite    import SpRobot, SpAnimation, SpShoot
 from   .engine    import Engine
-from   .event     import *
-from   .exception import *
+from   .event     import EvBorn, EvDeath, EvIdle
+from   .exception import ConfigError
 from   .robot     import Robot
+from   .util      import vec2d
 
 class God(object):
     def __init__(self, config):

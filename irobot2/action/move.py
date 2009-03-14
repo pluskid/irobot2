@@ -1,6 +1,6 @@
 from .basic   import Action
 from .compose import SequenceAction
-from ..util   import *
+from ..util   import vec2d
 from ..sprite import SpAnimation
 from ..event  import EvCollide
 

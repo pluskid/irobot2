@@ -4,7 +4,7 @@ from .dummy     import SpDummy
 from .robot     import SpRobot
 from .shoot     import SpShoot
 from .basic     import SpBase
-from .animation import *
+from .animation import SpAnimation, SpMovingAnimation
 from ..util     import vec2d
 
 

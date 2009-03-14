@@ -1,8 +1,6 @@
 from ..util import vec2d
 from .basic import SpBase
 
-__all__ = ['SpAnimation', 'SpMovingAnimation']
-
 class SpAnimation(SpBase):
     def __init__(self, position, images, delay=1):
         SpBase.__init__(self)

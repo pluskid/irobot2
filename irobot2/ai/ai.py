@@ -7,7 +7,7 @@ from   pygame      import Rect
 from   .ai_action  import perform_action
 from   .api        import State
 from   ..exception import IllegalOperation
-from   ..event     import *
+from   ..event     import EvBorn, EvDeath, EvDone
 from   ..util      import DictObj, vec2d
 
 class StateRunner(Thread):
