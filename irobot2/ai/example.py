@@ -16,3 +16,4 @@ class StGlobal(State):
         
     def on_collide(self, event):
         return 'Global'
+

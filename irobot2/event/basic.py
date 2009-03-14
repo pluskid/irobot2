@@ -1,10 +1,24 @@
 class Event(object):
     "Base class for all events"
+    PRIORITY_NORMAL    = 2
+    PRIORITY_IMPORTANT = 1
+    PRIORITY_CRITICAL  = 0
+
     name = 'k.event'
+    priority = PRIORITY_NORMAL
+
+    def __cmp__(self, other):
+        if self.priority < other.priority:
+            return -1
+        elif self.priority == other.priority:
+            return 0
+        return 1
+
 
 class EvDeath(Event):
     "Event for a robot death"
     name = 'k.death'
+    priority = Event.PRIORITY_CRITICAL
 
 class EvBorn(Event):
     "Event for a robot born"
