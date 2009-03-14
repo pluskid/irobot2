@@ -1,4 +1,4 @@
-from ..action    import AcMoveTo, AcShootAt, AcNop
+from ..action    import AcMoveTo, AcShootAt, AcNop, AcChangeState
 from ..exception import IllegalOperation
 
 __all__ = ['perform_action']
@@ -29,10 +29,15 @@ class ShootAtAction(AIAction):
         config = god.config['setting']['shoots'][self._stype]
         return config['cp']
 
+class ChangeStateAction(AIAction):
+    def make_action(self, robot, state):
+        return AcChangeState(robot, state)
+
 
 all_actions = {
         'MoveTo': MoveToAction(),
-        'ShootAt': ShootAtAction('normal')
+        'ShootAt': ShootAtAction('normal'),
+        'ChangeState': ChangeStateAction()
         }
 
 def perform_action(name, robot, *args):

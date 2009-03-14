@@ -32,3 +32,11 @@ class EvIdle(Event):
     "Event for idle robot"
     name = 'idle'
 
+class EvChangeState(Event):
+    "Event for state changing"
+    name = 'k.change_state'
+    priority = Event.PRIORITY_IMPORTANT
+
+    def __init__(self, state):
+        Event.__init__(self)
+        self.state = state

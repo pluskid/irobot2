@@ -7,7 +7,7 @@ from   pygame      import Rect
 from   .ai_action  import perform_action
 from   .api        import State
 from   ..exception import IllegalOperation
-from   ..event     import EvBorn, EvDeath, EvDone
+from   ..event     import EvBorn, EvDeath, EvDone, EvChangeState
 from   ..util      import DictObj, vec2d
 
 class StateRunner(Thread):
@@ -137,6 +137,7 @@ class AI(object):
         self._state_runner = None
 
     def process_event(self, event):
+        new_state = None
         if isinstance(event, EvBorn):
             self._state_runner = StateRunner(self._robot, 
                                              self._states['Global'])
@@ -145,13 +146,16 @@ class AI(object):
             self._state_runner.terminate_looping()
         elif isinstance(event, EvDone):
             self._state_runner.continue_looping()
+        elif isinstance(event, EvChangeState):
+            new_state = event.state
         else:
             new_state = self._state_runner._state.handle_event(event)
-            if new_state is not None:
-                self._state_runner.terminate_looping()
-                self._state_runner = StateRunner(self._robot,
-                                                 self._states[new_state])
-                self._state_runner.start_looping()
+
+        if new_state is not None:
+            self._state_runner.terminate_looping()
+            self._state_runner = StateRunner(self._robot,
+                                             self._states[new_state])
+            self._state_runner.start_looping()
 
 
 def parse_module(module):
