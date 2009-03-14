@@ -5,7 +5,7 @@ engine:
     fullscreen: false
 
 system:
-    capture: true
+    capture: false
     capture_output: capture
 
 setting:
