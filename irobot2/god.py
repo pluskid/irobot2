@@ -107,6 +107,7 @@ class God(object):
         return self._engine
 
     def start(self):
+        self._engine.render()   # initial render
         for robot in self._robots.itervalues():
             self.robot_born(robot)
 
