@@ -34,6 +34,10 @@ class Engine(object):
                                       basepath=basepath)
 
     @property
+    def screen(self):
+        return self._screen
+
+    @property
     def map(self):
         return self._map
 

@@ -1,4 +1,6 @@
 import sys
+from   os            import makedirs
+from   os            import path
 import pygame
 from   pygame.locals import *
 from   pygame.sprite import Group
@@ -22,6 +24,9 @@ class God(object):
         self._engine.add_group(self._gp_robots)
         self._engine.add_group(self._gp_animations)
         self._engine.add_group(self._gp_shoots)
+
+        if self._config['system']['capture']:
+            self._frames = []
 
     def build_robot(self, rtype, team, name):
         robot_id = '%s.%s' % (team, name)
@@ -111,16 +116,22 @@ class God(object):
         for robot in self._robots.itervalues():
             self.robot_born(robot)
 
+        capture = self._config['system']['capture']
         paused = False
         while True:
+            terminate = False
             for event in pygame.event.get():
                 if event.type == QUIT:
-                    sys.exit()
+                    terminate = True
+                    break
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
-                        sys.exit()
+                        terminate = True
+                        break
                     elif event.key == K_SPACE:
                         paused = not paused
+            if terminate:
+                break
 
             time_passed = self._engine.tick()
             if paused:
@@ -140,6 +151,11 @@ class God(object):
                 if all_dead:
                     break
             self._engine.render()
+            if capture:
+                self._frames.append(self._engine.screen.copy())
+        if capture:
+            self.save_capture()
+        sys.exit()
 
     def robot_born(self, robot):
         robot['k.alive'] = True
@@ -158,3 +174,20 @@ class God(object):
                 robot.event(event)
         else:
             robot.event(EvIdle())
+
+    def save_capture(self):
+        dest_dir = self._config['system']['capture_output']
+        if not path.exists(dest_dir):
+            makedirs(dest_dir)
+
+        nframes = len(self._frames)
+        print 'Saving %d frames...' % nframes
+        for i in range(nframes):
+            if (i+1) % 20 == 0:
+                sys.stdout.write('.')
+                sys.stdout.flush()
+                if (i+1) % 1000 == 0:
+                    sys.stdout.write('\n')
+            fn = path.join(dest_dir, '%04d.png'%(i+1))
+            pygame.image.save(self._frames[i], fn)
+        sys.stdout.write('\nDone\n')

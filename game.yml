@@ -4,6 +4,10 @@ engine:
     fps: 50
     fullscreen: false
 
+system:
+    capture: true
+    capture_output: capture
+
 setting:
     shoots:
         normal:
