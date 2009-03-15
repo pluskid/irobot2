@@ -9,13 +9,11 @@ from   .api        import State
 from   ..exception import IllegalOperation
 from   ..event     import EvBorn, EvDeath, EvDone, EvChangeState
 from   ..util      import DictObj, vec2d
+from   ..robot     import Robot
 
 class StateRunner(Thread):
     class Stop(Exception):
         pass
-    public_props = ['type', 'team', 'name', 'direction', 'position',
-                    'speed', 'angle_speed', 'strike', 'defend', 'sight',
-                    'hp', 'cp']
 
     def __init__(self, robot, state):
         Thread.__init__(self)
@@ -35,7 +33,7 @@ class StateRunner(Thread):
         def set_prop_getter(name):
             setattr(self._state, 'get_%s'%name,
                     lambda: self._robot['k.%s'%name])
-        for prop in StateRunner.public_props:
+        for prop in Robot.public_props:
             set_prop_getter(prop)
 
 
@@ -63,7 +61,7 @@ class StateRunner(Thread):
         # do what ever it want to, e.g. sprite._robot['k.hp'] = 0
         robot = sprite._robot
         info = DictObj()
-        for prop in StateRunner.public_props:
+        for prop in Robot.public_props:
             info[prop] = robot['k.%s'%prop]
         return info
 

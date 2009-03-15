@@ -3,6 +3,10 @@ from util       import PriorityQueue
 from threading  import Thread, RLock
 
 class Robot(Thread):
+    public_props = ['type', 'team', 'name', 'direction', 'position',
+                    'speed', 'angle_speed', 'strike', 'defend', 'sight',
+                    'hp', 'cp']
+
     def __init__(self, props):
         Thread.__init__(self)
         self._queue = PriorityQueue()
