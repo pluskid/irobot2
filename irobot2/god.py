@@ -1,6 +1,7 @@
 import sys
 from   os            import makedirs
 from   os            import path
+from   random        import randint
 import pygame
 from   pygame.locals import *
 from   pygame.sprite import Group
@@ -28,6 +29,8 @@ class God(object):
         if self._config['system']['capture']:
             self._frames = []
 
+        self._teams = {}
+
     def build_robot(self, rtype, team, name):
         robot_id = '%s.%s' % (team, name)
         if self._robots.has_key(robot_id):
@@ -39,7 +42,7 @@ class God(object):
         rpropos = {
                 'k.type': rtype,
                 'k.god': self,
-                'k.alpha': 255,
+                'k.alpha': 0,
                 'k.direction': vec2d(1, 0),
                 'k.team': team,
                 'k.name': name,
@@ -56,6 +59,9 @@ class God(object):
         robot['k.sprite'] = sprite
         self._gp_robots.add(sprite)
         self._robots[robot_id] = robot
+
+        self._teams.setdefault(team, [])
+        self._teams[team].append(name)
         return robot
 
     def add_animation(self, animation):
@@ -88,6 +94,25 @@ class God(object):
                 targets.append(s)
         return targets
 
+    def put_robots(self):
+        # currently we only support two teams, robots are 
+        # put on the top right and bottom left cornors
+        if len(self._teams) != 2:
+            raise ConfigError('Only two teams supported in this version')
+        teams = self._teams.keys()
+        geo = self._engine.map.geometry
+        start_pos = [(geo[0]-1, 0), (0, geo[1]-1)]
+        xinc = [-1, 1]
+        for i in (0, 1):
+            team = teams[i]
+            pos = start_pos[i]
+            for rbname in self._teams[team]:
+                robot = self._robots['%s.%s' % (team, rbname)]
+                robot['k.position'] = \
+                        self._engine.map.tile2pixel(pos, center=True)
+                robot['k.alpha'] = 255
+                pos = (pos[0]+xinc[i], pos[1])
+
     def collision_detect(self, rect, objs):
         spritecollide = rect.colliderect
         def cd_group(grps):
@@ -112,7 +137,9 @@ class God(object):
         return self._engine
 
     def start(self):
-        self._engine.render()   # initial render
+        self._engine.render()   # initial render to init graphics
+        self.put_robots()
+
         for robot in self._robots.itervalues():
             self.robot_born(robot)
 

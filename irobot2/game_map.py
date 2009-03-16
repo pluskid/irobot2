@@ -88,8 +88,10 @@ class GameMap(object):
         screen.blit(self._background, self._background.get_rect())
         self._gp_all.draw(screen)
 
-    def tile2pixel(self, pos):
+    def tile2pixel(self, pos, center=False):
         x = pos[0]*self._tile_size[0]
         y = pos[1]*self._tile_size[1]
+        if center:
+            return vec2d(x+self._tile_size[0]/2,y+self._tile_size[1]/2)
         return vec2d(x, y)
 

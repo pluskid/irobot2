@@ -15,10 +15,10 @@ with open('game.yml') as ins:
     god = God(yaml.load(ins.read()))
 
 robot1 = god.build_robot('wasp', 'kid', 'Apache')
-robot1['k.position'] = vec2d(500, 400)
+robot1['k.position'] = (0, 0)
 
-robot2 = god.build_robot('apache_II', 'kid', 'Ruby')
-robot2['k.position'] = vec2d(300, 300)
+robot2 = god.build_robot('apache_II', 'kily', 'Ruby')
+robot2['k.position'] = (0, 0)
 
 ## state
 states = parse_module(example)

@@ -22,7 +22,7 @@ class SpRobot(SpBase):
 
         pos = self._robot['k.position']
         self.rect = self.image.get_rect()
-        self.rect.center = (pos.x, pos.y)
+        self.rect.center = (pos[0], pos[1])
 
     def rotate_image(self):
         self._direction = self._robot['k.direction']
