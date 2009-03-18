@@ -1,4 +1,4 @@
-from ..action    import AcMoveTo, AcShootAt, AcNop, AcChangeState
+from ..action    import AcMoveTo, AcShootAt, AcNop, AcChangeState, AcPathTo
 from ..exception import IllegalOperation
 
 __all__ = ['perform_action']
@@ -12,6 +12,10 @@ class AIAction(object):
 class MoveToAction(AIAction):
     def make_action(self, robot, dest):
         return AcMoveTo(robot, dest)
+
+class PathToAction(AIAction):
+    def make_action(self, robot, dest):
+        return AcPathTo(robot, dest)
 
 class ShootAtAction(AIAction):
     def __init__(self, stype):
@@ -36,6 +40,7 @@ class ChangeStateAction(AIAction):
 
 all_actions = {
         'MoveTo': MoveToAction(),
+        'PathTo': PathToAction(),
         'ShootAt': ShootAtAction('normal'),
         'ChangeState': ChangeStateAction()
         }

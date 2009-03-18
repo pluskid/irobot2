@@ -18,7 +18,7 @@ class AcMove(Action):
         if distance >= vdist.length:
             new_pos = self._dest
         else:
-            new_pos = self._robot['k.position'] + vdist.normalized()*distance
+            new_pos = self._robot['k.position']+vdist.normalized()*distance
         rect = self._robot['k.sprite'].image.get_rect()
         rect.center = new_pos
         target = god.collision_detect(rect, (self._robot['k.sprite'],))

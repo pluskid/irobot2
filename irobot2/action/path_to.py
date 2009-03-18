@@ -1,11 +1,33 @@
 from .basic   import Action
 from .compose import SequenceAction
+from .move    import AcMoveTo
 from ..util   import vec2d
 
 class AcPathTo(Action):
     def __init__(self, robot, dest):
         Action.__init__(self, robot)
-        
+        path = find_path(robot['k.god']._engine.map, 
+                         robot['k.position'],
+                         dest)
+        actions = []
+        node_start = path[0]
+        xinc = path[1][0]-path[0][0]
+        yinc = path[1][1]-path[0][1]
+        for i in range(2, len(path)):
+            node = path[i]
+            node_prev = path[i-1]
+            if node[0]-node_prev[0] == xinc and \
+               node[1]-node_prev[1] == yinc:
+                continue
+            actions.append(AcMoveTo(robot, vec2d(node_prev)))
+            node_start = node_prev
+            xinc = node[0]-node_prev[0]
+            yinc = node[1]-node_prev[1]
+        actions.append(AcMoveTo(robot, vec2d(path[-1])))
+        self._action = SequenceAction(robot, actions)
+
+    def update(self, god, intv):
+        return self._action.update(god, intv)
 
 class Node(object):
     def __init__(self, pos, parent, G, end):

@@ -104,5 +104,6 @@ class GameMap(object):
         return vec2d(x, y)
 
     def pixel2tile(self, pos):
-        return (pos[0]/self._tile_size[0], pos[1]/self._tile_size[1])
+        return (int(pos[0]/self._tile_size[0]), 
+                int(pos[1]/self._tile_size[1]))
 
