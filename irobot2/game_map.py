@@ -6,7 +6,7 @@ from   pygame.sprite import Group
 from   pygame        import Rect
 
 from   .sprite import SpObject, SpDummy
-from   .util   import vec2d
+from   .util   import vec2d, make_2darray
 
 class GameMap(object):
     def __init__(self, resmgr, map_path=None):
@@ -18,8 +18,8 @@ class GameMap(object):
             info = yaml.load(ins.read())
         self._tile_size = info['info']['tile_size']
         self._geometry = info['info']['geometry']
-        self._grid = [[None]*self._geometry[1]]*self._geometry[0]
-        self._bitgrid = [[0]*self._geometry[1]]*self._geometry[0]
+        self._grid = make_2darray(None, self._geometry)
+        self._bitgrid = make_2darray(0, self._geometry)
 
         self._gp_all = Group()
         self._gp_obstacle = Group()
@@ -58,7 +58,7 @@ class GameMap(object):
                     spobj.shift_exits = sexit_objs
                     self._gp_all.add(spobj)
                     self._gp_shift_entrance.add(spobj)
-                    self._grid[pos[1]][pos[1]] = spobj
+                    self._grid[pos[0]][pos[1]] = spobj
 
         # make dummy sprites for the walls
         width  = self._geometry[0]*self._tile_size[0]

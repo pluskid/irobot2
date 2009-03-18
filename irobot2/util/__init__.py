@@ -6,4 +6,6 @@ class DictObj(dict):
         dict.__init__(self, *args)
         self.__dict__ = self
 
-
+def make_2darray(elem, geometry):
+    return [[elem for i in range(geometry[1])]
+            for j in range(geometry[0])]

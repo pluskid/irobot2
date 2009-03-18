@@ -14,8 +14,6 @@ class Node(object):
         self.G = G
         self.H = abs(pos[0]-end[0])+abs(pos[1]-end[1])
 
-        print 'Node (%s): G=%d, H=%d' % (self.pos, G, self.H)
-
     @property
     def F(self):
         return self.G+10*self.H
@@ -44,7 +42,7 @@ def find_path(map, src, dest):
         node = open_nodes[bestk]
         del open_nodes[bestk]
         close_nodes.add(node.pos)
-        if node == end:
+        if node.pos == end:
             break
 
         for inc in incs:
@@ -52,7 +50,6 @@ def find_path(map, src, dest):
             if new_pos in close_nodes:
                 continue
             if map.is_obstacle(new_pos):
-                print 'obstacle: %s (%s)' % (inc, new_pos)
                 continue
             new_G = node.G + inc[1]
             new_node = open_nodes.get(new_pos)
