@@ -47,11 +47,16 @@ class Engine(object):
     def add_group(self, group):
         self._groups.append(group)
 
-    def render(self):
+    def render(self, path):
         self._map.render(self._screen)
 
         for grp in self._groups:
             grp.update()
             grp.draw(self._screen)
+
+        # TEST CODE
+        for pos in path:
+            pygame.draw.circle(self._screen, (255, 0, 0), 
+                    pos, 10)
 
         pygame.display.flip()

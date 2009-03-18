@@ -19,6 +19,7 @@ class GameMap(object):
         self._tile_size = info['info']['tile_size']
         self._geometry = info['info']['geometry']
         self._grid = [[None]*self._geometry[1]]*self._geometry[0]
+        self._bitgrid = [[0]*self._geometry[1]]*self._geometry[0]
 
         self._gp_all = Group()
         self._gp_obstacle = Group()
@@ -31,6 +32,7 @@ class GameMap(object):
                 spobj.type = obj['type']
                 self._gp_all.add(spobj)
                 self._grid[pos[0]][pos[1]] = spobj
+                self._bitgrid[pos[0]][pos[1]] = 1
                 if obj['type'] in ['obstacle', 'box', 'treasure']:
                     self._gp_obstacle.add(spobj)
 
@@ -46,6 +48,7 @@ class GameMap(object):
                     spobj = SpObject(self.tile2pixel(pos), image)
                     sexit_objs.append(spobj)
                     self._gp_all.add(spobj)
+                    self._grid[pos[0]][pos[1]] = spobj
                     
                 entrance = shift['entrance']
                 image = resmgr.get_image(entrance['image'], 
@@ -55,9 +58,7 @@ class GameMap(object):
                     spobj.shift_exits = sexit_objs
                     self._gp_all.add(spobj)
                     self._gp_shift_entrance.add(spobj)
-
-
-                    
+                    self._grid[pos[1]][pos[1]] = spobj
 
         # make dummy sprites for the walls
         width  = self._geometry[0]*self._tile_size[0]
@@ -71,6 +72,13 @@ class GameMap(object):
 
     def __getitem__(self, pos):
         return self._grid[pos[0]][pos[1]]
+
+    def is_obstacle(self, pos):
+        if pos[0] < 0 or pos[1] < 0 or \
+                pos[0] >= self._geometry[0] or \
+                pos[1] >= self._geometry[1]:
+            return True
+        return self._bitgrid[pos[0]][pos[1]] != 0
 
     @property
     def tile_size(self):
@@ -94,4 +102,7 @@ class GameMap(object):
         if center:
             return vec2d(x+self._tile_size[0]/2,y+self._tile_size[1]/2)
         return vec2d(x, y)
+
+    def pixel2tile(self, pos):
+        return (pos[0]/self._tile_size[0], pos[1]/self._tile_size[1])
 

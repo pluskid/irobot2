@@ -31,6 +31,10 @@ class God(object):
 
         self._teams = {}
 
+        # TEST CODE
+        from irobot2.action.path_to import find_path
+        self._path = find_path(self._engine.map, vec2d(100, 100), vec2d(500, 500))
+
     def build_robot(self, rtype, team, name):
         robot_id = '%s.%s' % (team, name)
         if self._robots.has_key(robot_id):
@@ -137,7 +141,7 @@ class God(object):
         return self._engine
 
     def start(self):
-        self._engine.render()   # initial render to init graphics
+        self._engine.render(self._path)   # initial render to init graphics
         self.put_robots()
 
         for robot in self._robots.itervalues():
@@ -177,7 +181,9 @@ class God(object):
 
                 if all_dead:
                     break
-            self._engine.render()
+            self._engine.render(self._path)
+
+
             if capture:
                 self._frames.append(self._engine.screen.copy())
         if capture:
