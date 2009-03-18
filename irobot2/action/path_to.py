@@ -19,15 +19,27 @@ class Node(object):
         return self.G+10*self.H
 
 def find_path(map, src, dest):
+    def get_moves(pos):
+        moves = []
+        for xinc, yinc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+            new_pos = (pos[0]+xinc,pos[1]+yinc)
+            if not map.is_obstacle(new_pos):
+                moves.append((new_pos, 10))
+        for xinc in (-1, 1):
+            for yinc in (-1, 1):
+                if map.is_obstacle((pos[0]+xinc,pos[1]+yinc)) or \
+                   map.is_obstacle((pos[0], pos[1]+yinc)) or \
+                   map.is_obstacle((pos[0]+xinc, pos[1])):
+                    continue
+                moves.append(((pos[0]+xinc,pos[1]+yinc), 14))
+        return moves
+
     start = map.pixel2tile(src)
     end   = map.pixel2tile(dest)
 
     close_nodes = set()
     open_nodes = {start: Node(start, None, 0, end)}
 
-    incs = [((1, -1), 14), ((1, 0), 10), ((1, 1), 14),
-            ((0, -1), 10), ((0, 1), 10), ((-1, -1), 14),
-            ((-1, 0), 10), ((-1, 1), 14)]
     node = None
 
     while True:
@@ -45,13 +57,10 @@ def find_path(map, src, dest):
         if node.pos == end:
             break
 
-        for inc in incs:
-            new_pos = (node.pos[0] + inc[0][0], node.pos[1]+inc[0][1])
+        for new_pos, cost in get_moves(node.pos):
             if new_pos in close_nodes:
                 continue
-            if map.is_obstacle(new_pos):
-                continue
-            new_G = node.G + inc[1]
+            new_G = node.G + cost
             new_node = open_nodes.get(new_pos)
             if new_node is not None:
                 if new_node.G > new_G:
