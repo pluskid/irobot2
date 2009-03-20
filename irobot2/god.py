@@ -6,7 +6,7 @@ import pygame
 from   pygame.locals import *
 from   pygame.sprite import Group
 
-from   .sprite    import SpRobot, SpAnimation, SpShoot
+from   .sprite    import SpRobot, SpAnimation, SpShoot, SpHPOverlay
 from   .engine    import Engine
 from   .event     import EvBorn, EvDeath, EvIdle
 from   .exception import ConfigError
@@ -22,9 +22,11 @@ class God(object):
         self._gp_robots = Group()
         self._gp_animations = Group()
         self._gp_shoots = Group()
+        self._gp_overlays = Group()
         self._engine.add_group(self._gp_robots)
         self._engine.add_group(self._gp_animations)
         self._engine.add_group(self._gp_shoots)
+        self._engine.add_group(self._gp_overlays)
 
         if self._config['system']['capture']:
             self._frames = []
@@ -60,6 +62,10 @@ class God(object):
         self._gp_robots.add(sprite)
         self._robots[robot_id] = robot
 
+        hp_overlay = SpHPOverlay(robot)
+        robot.add_overlay(hp_overlay)
+        self._gp_overlays.add(hp_overlay)
+
         self._teams.setdefault(team, [])
         self._teams[team].append(name)
         return robot
@@ -93,6 +99,9 @@ class God(object):
             if s != sprite and spritecollide(s.rect):
                 targets.append(s)
         return targets
+
+    def prototype(self, rtype):
+        return self._config['setting']['robots'][rtype]
 
     def put_robots(self):
         # currently we only support two teams, robots are 
@@ -187,11 +196,11 @@ class God(object):
         sys.exit()
 
     def robot_born(self, robot):
-        robot['k.alive'] = True
+        robot.born()
         robot.event(EvBorn())
         robot.start()
     def robot_die(self, robot):
-        robot['k.alive'] = False
+        robot.die()
         robot.event(EvDeath())
         
     def perform_action(self, robot, time_passed):

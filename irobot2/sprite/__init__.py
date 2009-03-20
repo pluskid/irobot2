@@ -5,6 +5,7 @@ from .robot     import SpRobot
 from .shoot     import SpShoot
 from .basic     import SpBase
 from .animation import SpAnimation, SpMovingAnimation
+from .overlay   import SpHPOverlay
 from ..util     import vec2d
 
 

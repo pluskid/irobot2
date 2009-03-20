@@ -17,29 +17,35 @@ setting:
             cp:     10
     robots:
         wasp:
-            speed:       0.2
-            angle_speed: 0.4
-            hp:          500
-            cp:          500
-            sight:       300
-            strike:      0.8
-            defend:      0.15
-            image:       robot-1
+            speed:        0.2
+            angle_speed:  0.4
+            hp:           500
+            cp:           500
+            sight:        300
+            strike:       0.8
+            defend:       0.15
+            image:        robot-1
         ruby:
-            speed:       0.3
-            angle_speed: 0.5
-            hp:          500
-            cp:          400
-            sight:       300
-            strike:      0.6
-            defend:      0.25
-            image:       robot-2
+            speed:        0.3
+            angle_speed:  0.5
+            hp:           500
+            cp:           400
+            sight:        300
+            strike:       0.6
+            defend:       0.25
+            image:        robot-2
         apache_II:
-            speed:       0.1
-            angle_speed: 0.2
-            hp:          1000
-            cp:          1000
-            sight:       220
-            strike:      1000
-            defend:      0.4
-            image:       robot-4
+            speed:        0.1
+            angle_speed:  0.2
+            hp:           1000
+            cp:           1000
+            sight:        250
+            strike:       1
+            defend:       0.4
+            image:        robot-4
+    overlays:
+        hp:
+            size:         [32, 5]
+            border_color: [189, 190, 189]
+            fill_color:   [66, 215, 66]
+            bg_color:     [50, 50, 50]

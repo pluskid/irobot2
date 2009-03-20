@@ -1,6 +1,7 @@
 from __future__ import with_statement
-from util       import PriorityQueue
 from threading  import Thread, RLock
+
+from .util      import PriorityQueue
 
 class Robot(Thread):
     public_props = ['type', 'team', 'name', 'direction', 'position',
@@ -13,6 +14,18 @@ class Robot(Thread):
         self._lock  = RLock()
         self._props = dict(props)
         self._ai = None
+        self._overlays = []
+
+    def add_overlay(self, overlay):
+        self._overlays.append(overlay)
+
+    def born(self):
+        self['k.alive'] = True
+
+    def die(self):
+        self['k.alive'] = False
+        for overlay in self._overlays:
+            overlay.kill()
         
     def __getitem__(self, key):
         default = None
