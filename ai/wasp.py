@@ -1,24 +1,28 @@
-from random import randint
+from random         import randint
 
-from .api   import State
-from ..util import vec2d
+from irobot2.ai.api import State
+from irobot2.util   import vec2d
 
 class StGlobal(State):
     def loop(self):
         friends, enemies = self.look_around()
         if len(enemies) != 0:
+            enemy = enemies[0]
+            self.put('the-enemy.team', enemy.team)
+            self.put('the-enemy.name', enemy.name)
             self.run_action('ChangeState', 'Kill')
         self.run_action('PathTo', vec2d(randint(0, 500), randint(0, 500)))
-        
+
     def on_collide(self, event):
         return 'Global'
 
-class StKill(State):
+class StKill(StGlobal):
     def loop(self):
-        friends, enemies = self.look_around()
-        if len(enemies) == 0:
+        team = self.get('the-enemy.team')
+        name = self.get('the-enemy.name')
+        enemy = self.get_info(team, name)
+        if enemy is None:
             self.run_action('ChangeState', 'Global')
         else:
-            enemy = enemies[0]
             self.run_action('ShootAt', enemy.position)
 

@@ -1,6 +1,8 @@
 from __future__ import with_statement
 from threading  import Thread, RLock
 
+from pygame     import Rect
+
 from .util      import PriorityQueue
 
 class Robot(Thread):
@@ -36,6 +38,10 @@ class Robot(Thread):
     def __setitem__(self, key, val):
         with self._lock:
             self._props[key] = val
+
+    @property
+    def eyesight_rect(self):
+        return Rect(0, 0, self['k.sight'], self['k.sight'])
 
     def event(self, event):
         self._queue.put(event)

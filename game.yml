@@ -1,6 +1,6 @@
 engine:
-    width: 800
-    height: 600
+    width: 988
+    height: 676
     fps: 50
     fullscreen: false
 

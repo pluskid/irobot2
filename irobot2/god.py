@@ -46,6 +46,7 @@ class God(object):
                 'k.god': self,
                 'k.alpha': 0,
                 'k.direction': vec2d(1, 0),
+                'k.position': vec2d(0, 0),
                 'k.team': team,
                 'k.name': name,
                 'k.speed': config['speed'],
@@ -90,7 +91,7 @@ class God(object):
         self._gp_animations.add(explode)
 
     def robot_look_around(self, robot):
-        rect = Rect(0, 0, robot['k.sight'], robot['k.sight'])
+        rect = robot.eyesight_rect
         rect.center = robot['k.position']
         spritecollide = rect.colliderect
         sprite = robot['k.sprite']
@@ -102,6 +103,9 @@ class God(object):
 
     def prototype(self, rtype):
         return self._config['setting']['robots'][rtype]
+
+    def get_robot(self, team, name):
+        return self._robots.get('%s.%s' % (team, name))
 
     def put_robots(self):
         # currently we only support two teams, robots are 

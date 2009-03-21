@@ -28,6 +28,10 @@ class StateRunner(Thread):
         self._state.elem_size   = self.elem_size
         self._state.grid2point  = self.grid2point
         self._state.look_around = self.look_around
+        self._state.get_info    = self.get_info
+
+        self._state.get         = self.get
+        self._state.put         = self.put
 
         # See http://blog.pluskid.org/?p=299
         def set_prop_getter(name):
@@ -36,6 +40,10 @@ class StateRunner(Thread):
         for prop in Robot.public_props:
             set_prop_getter(prop)
 
+    def get(self, key):
+        return self._robot['u.%s'%key]
+    def put(self, key, val):
+        self._robot['u.%s'%key] = val
 
     def run_action(self, name, *args):
         if threading.currentThread() is not self:
@@ -52,7 +60,23 @@ class StateRunner(Thread):
     def look_around(self):
         sprites = self._robot['k.god'].robot_look_around(self._robot)
         robots = [self.collect_robot_info(r) for r in sprites]
-        return robots
+        friends = []; enemies = []
+        team = self._robot['k.team']
+        for r in robots:
+            if r.team == team:
+                friends.append(r)
+            else:
+                enemies.append(r)
+        return friends, enemies
+    def get_info(self, team, name):
+        robot = self._robot['k.god'].get_robot(team, name)
+        if robot is not None:
+            eyesight = self._robot.eyesight_rect
+            if team == self._robot['k.team'] or \
+               eyesight.colliderect(robot['k.sprite'].rect):
+                return self.collect_robot_info(robot['k.sprite'])
+        return None
+
     def collect_robot_info(self, sprite):
         # We collect thise information here instead of return 
         # the sprite directly or wrap it as a proxy to generate
