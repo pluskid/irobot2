@@ -11,8 +11,8 @@ class StGlobal(State):
             self.put('the-enemy.team', enemy.team)
             self.put('the-enemy.name', enemy.name)
             self.run_action('ChangeState', 'Kill')
-        self.run_action('PathTo', self.position+vec2d(randint(0, 100),
-                                                      randint(0, 100)))
+        new_pos = self.position+vec2d(randint(0, 100), randint(0, 100))
+        self.run_action('PathTo', new_pos)
 
     def on_collide(self, event):
         return 'Global'

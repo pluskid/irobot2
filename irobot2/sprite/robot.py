@@ -8,6 +8,7 @@ class SpRobot(SpBase):
         SpBase.__init__(self)
         self._robot = robot
         self._base_image = image
+        self._bound_rect = pygame.Rect(image.get_rect())
         self.rotate_image()
         self.alpha_image()
 
@@ -23,6 +24,10 @@ class SpRobot(SpBase):
         pos = self._robot['k.position']
         self.rect = self.image.get_rect()
         self.rect.center = (pos[0], pos[1])
+
+    @property
+    def bound_rect(self):
+        return self._bound_rect
 
     def rotate_image(self):
         self._direction = self._robot['k.direction']

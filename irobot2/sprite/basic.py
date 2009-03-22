@@ -12,6 +12,10 @@ class SpBase(Sprite):
         if self.hp <= 0:
             self.die(god)
 
+    @property
+    def bound_rect(self):
+        return self.rect
+
     def die(self, god):
         god.create_explosion_animation(vec2d(self.rect.center),
                                        'explode-large')

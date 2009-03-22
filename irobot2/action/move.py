@@ -1,3 +1,5 @@
+from __future__ import with_statement
+
 import pygame
 
 from .basic   import Action
@@ -15,19 +17,20 @@ class AcMove(Action):
         self._dest = dest
 
     def update(self, god, intv):
-        vdist = (self._dest-self._robot['k.position'])
+        vdist = (self._dest-self._robot.position)
         distance = intv*self._robot['k.speed']
         if distance >= vdist.length:
             new_pos = self._dest
         else:
-            new_pos = self._robot['k.position']+vdist.normalized()*distance
-        rect = self._robot['k.sprite'].image.get_rect()
+            new_pos = self._robot.position+vdist.normalized()*distance
+
+        rect = pygame.Rect(self._robot['k.sprite'].bound_rect)
         rect.center = new_pos
         target = god.collision_detect(rect, (self._robot['k.sprite'],))
         if target is not None:
             return EvCollide(target)
 
-        self._robot['k.position'] = new_pos
+        self._robot.position = new_pos
         if new_pos == self._dest:
             return self.event_done()
         return None
@@ -48,16 +51,6 @@ class AcTurn(Action):
         else:
             final_direction = direction.rotated(ang)
 
-        # TODO: use a better way to get rotated bound rect
-        new_rect = pygame.transform.rotate(
-            self._robot['k.sprite']._base_image,
-            -final_direction.angle).get_rect()
-        new_rect.center = self._robot['k.position']
-
-        target = god.collision_detect(new_rect, (self._robot['k.sprite'],))
-        if target is not None:
-            return EvCollide(target)
-
         self._robot['k.direction'] = final_direction
         if abs(ang) >= abs(ang_remain):
             return self.event_done()
@@ -66,7 +59,7 @@ class AcTurn(Action):
 class AcMoveTo(Action):
     def __init__(self, robot, dest):
         Action.__init__(self, robot)
-        aturn = AcTurn(robot, dest-robot['k.position'])
+        aturn = AcTurn(robot, dest-robot.position)
         amove = AcMove(robot, dest)
         self._action = SequenceAction(robot, [aturn, amove])
 
@@ -82,7 +75,7 @@ class AcDisappear(Action):
     def update(self, god, intv):
         if self._animation is None:
             images = god.engine.get_images('magic-small', colorkey='alpha')
-            self._animation = SpAnimation(self._robot['k.position'], images)
+            self._animation = SpAnimation(self._robot.position, images)
             god.add_animation(self._animation)
             self._alpha_dec = self._robot['k.alpha']/len(images)+1
         else:
@@ -103,7 +96,7 @@ class AcAppear(Action):
     def update(self, god, intv):
         if self._animation is None:
             images = god.engine.get_images('magic-small', colorkey='alpha')
-            self._animation = SpAnimation(self._robot['k.position'], images)
+            self._animation = SpAnimation(self._robot.position, images)
             god.add_animation(self._animation)
             self._alpha_inc = (255-self._robot['k.alpha'])/len(images)+1
         else:
@@ -121,7 +114,7 @@ class AcShift(Action):
             Action.__init__(self, robot)
             self._dest = dest
         def update(self, god, intv):
-            self._robot['k.position'] = self._dest
+            self._robot.position = self._dest
             return self.event_done()
 
     def __init__(self, robot, dest):

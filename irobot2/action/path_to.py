@@ -1,3 +1,5 @@
+from random   import randint
+
 from .basic   import Action
 from .compose import SequenceAction
 from .move    import AcMoveTo
@@ -58,6 +60,22 @@ def find_path(map, src, dest):
 
     start = map.pixel2tile(src)
     end   = map.pixel2tile(dest)
+    
+    # search for a suitable start position:
+    #   * there should be some randomization, or else two robots
+    #     close to each other will want to move to the same start
+    #     position first and will cause collision.
+    #   * start position shoule not be obstacle
+    start = (start[0]+randint(-1, 1), start[1]+randint(-1,1))
+    found = False
+    for dx in [0, -1, 1, -2, 2]:
+        if found: break
+        for dy in [0, -1, 1, -2, 2]:
+            if not found:
+                start = (start[0]+dx,start[1]+dy)
+                if not map.is_obstacle(start):
+                    found = True
+            else: break
 
     close_nodes = set()
     open_nodes = {start: Node(start, None, 0, end)}

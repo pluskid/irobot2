@@ -39,6 +39,13 @@ class Robot(Thread):
         with self._lock:
             self._props[key] = val
 
+    def set_position(self, pos):
+        self['k.position'] = pos
+        self['k.sprite'].bound_rect.center = pos
+    def get_position(self):
+        return self['k.position']
+    position = property(get_position, set_position)
+
     @property
     def eyesight_rect(self):
         rect = Rect(0, 0, self['k.sight'], self['k.sight'])

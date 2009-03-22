@@ -8,7 +8,7 @@ from   pygame.sprite import Group
 
 from   .sprite    import SpRobot, SpAnimation, SpShoot, SpHPOverlay
 from   .engine    import Engine
-from   .event     import EvBorn, EvDeath, EvIdle
+from   .event     import EvBorn, EvDeath, EvIdle, EvDone
 from   .exception import ConfigError
 from   .robot     import Robot
 from   .util      import vec2d
@@ -92,12 +92,11 @@ class God(object):
 
     def robot_look_around(self, robot):
         rect = robot.eyesight_rect
-        rect.center = robot['k.position']
         spritecollide = rect.colliderect
         sprite = robot['k.sprite']
         targets = []
         for s in self._gp_robots:
-            if s != sprite and s._robot['k.alive'] and spritecollide(s.rect):
+            if s != sprite and s._robot['k.alive'] and spritecollide(s.bound_rect):
                 targets.append(s)
         return targets
 
@@ -121,7 +120,7 @@ class God(object):
             pos = start_pos[i]
             for rbname in self._teams[team]:
                 robot = self._robots['%s.%s' % (team, rbname)]
-                robot['k.position'] = \
+                robot.position = \
                         self._engine.map.tile2pixel(pos, center=True)
                 robot['k.alpha'] = 255
                 pos = (pos[0]+xinc[i], pos[1])
@@ -131,7 +130,7 @@ class God(object):
         def cd_group(grps):
             for grp in grps:
                 for s in grp:
-                    if (not s in objs) and spritecollide(s.rect):
+                    if (not s in objs) and spritecollide(s.bound_rect):
                         return s
             return None
         return cd_group((self._gp_robots, 
@@ -212,7 +211,8 @@ class God(object):
         if action is not None:
             event = action.update(self, time_passed)
             if event is not None:
-                robot['k.action'] = None
+                if isinstance(event, EvDone):
+                    robot['k.action'] = None
                 robot.event(event)
         else:
             robot.event(EvIdle())

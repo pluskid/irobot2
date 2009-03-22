@@ -73,7 +73,7 @@ class StateRunner(Thread):
         if robot is not None and robot['k.alive']:
             eyesight = self._robot.eyesight_rect
             if team == self._robot['k.team'] or \
-               eyesight.colliderect(robot['k.sprite'].rect):
+               eyesight.colliderect(robot['k.sprite'].bound_rect):
                 return self.collect_robot_info(robot['k.sprite'])
         return None
 
