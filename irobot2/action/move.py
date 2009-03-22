@@ -1,3 +1,5 @@
+import pygame
+
 from .basic   import Action
 from .compose import SequenceAction
 from ..util   import vec2d
@@ -42,9 +44,23 @@ class AcTurn(Action):
         if ang_remain < 0:
             ang = -ang
         if abs(ang) >= abs(ang_remain):
-            self._robot['k.direction'] = direction.rotated(ang_remain)
+            final_direction = direction.rotated(ang_remain)
+        else:
+            final_direction = direction.rotated(ang)
+
+        # TODO: use a better way to get rotated bound rect
+        new_rect = pygame.transform.rotate(
+            self._robot['k.sprite']._base_image,
+            -final_direction.angle).get_rect()
+        new_rect.center = self._robot['k.position']
+
+        target = god.collision_detect(new_rect, (self._robot['k.sprite'],))
+        if target is not None:
+            return EvCollide(target)
+
+        self._robot['k.direction'] = final_direction
+        if abs(ang) >= abs(ang_remain):
             return self.event_done()
-        self._robot['k.direction'] = direction.rotated(ang)
         return None
 
 class AcMoveTo(Action):

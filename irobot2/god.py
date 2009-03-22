@@ -97,7 +97,7 @@ class God(object):
         sprite = robot['k.sprite']
         targets = []
         for s in self._gp_robots:
-            if s != sprite and spritecollide(s.rect):
+            if s != sprite and s._robot['k.alive'] and spritecollide(s.rect):
                 targets.append(s)
         return targets
 

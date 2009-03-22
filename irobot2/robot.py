@@ -41,7 +41,9 @@ class Robot(Thread):
 
     @property
     def eyesight_rect(self):
-        return Rect(0, 0, self['k.sight'], self['k.sight'])
+        rect = Rect(0, 0, self['k.sight'], self['k.sight'])
+        rect.center = self['k.position']
+        return rect
 
     def event(self, event):
         self._queue.put(event)

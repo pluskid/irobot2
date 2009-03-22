@@ -70,7 +70,7 @@ class StateRunner(Thread):
         return friends, enemies
     def get_info(self, team, name):
         robot = self._robot['k.god'].get_robot(team, name)
-        if robot is not None:
+        if robot is not None and robot['k.alive']:
             eyesight = self._robot.eyesight_rect
             if team == self._robot['k.team'] or \
                eyesight.colliderect(robot['k.sprite'].rect):
