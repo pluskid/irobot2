@@ -15,10 +15,10 @@ class StateRunner(Thread):
     class Stop(Exception):
         pass
 
-    def __init__(self, robot, state):
+    def __init__(self, robot, state, *args):
         Thread.__init__(self)
         self._robot = robot
-        self._state = state()
+        self._state = state(*args)
         self._stop = False
         self._event = threading.Event()
 
@@ -159,7 +159,7 @@ class AI(object):
         self._state_runner = None
 
     def process_event(self, event):
-        new_state = None
+        res = None
         if isinstance(event, EvBorn):
             self._state_runner = StateRunner(self._robot, 
                                              self._states['Global'])
@@ -169,20 +169,23 @@ class AI(object):
         elif isinstance(event, EvDone):
             self._state_runner.continue_looping()
         elif isinstance(event, EvChangeState):
-            new_state = event.state
+            res = ('change', event.state) + event.args
         else:
-            new_state = self._state_runner._state.handle_event(event)
+            res = self._state_runner._state.handle_event(event)
 
-        if new_state is not None:
-            if new_state == ':continue':
+        if res is not None and res[0] != 'ignore':
+            if res[0] == 'continue':
                 self._robot['k.action'] = None
                 self._state_runner.continue_looping()
-            else:
+            elif res[0] == 'change':
                 self._state_runner.terminate_looping()
                 self._state_runner = StateRunner(self._robot,
-                                                 self._states[new_state])
+                                                 self._states[res[1]],
+                                                 *res[2:])
                 self._state_runner.start_looping()
-
+            else:
+                raise IllegalOperation('Unknown event handling result: %s'%
+                                       res[0])
 
 def parse_module(module):
     states = {}

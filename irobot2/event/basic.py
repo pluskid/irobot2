@@ -37,6 +37,7 @@ class EvChangeState(Event):
     name = 'k.change_state'
     priority = Event.PRIORITY_IMPORTANT
 
-    def __init__(self, state):
+    def __init__(self, state, *args):
         Event.__init__(self)
         self.state = state
+        self.args = args

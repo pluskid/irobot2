@@ -15,7 +15,7 @@ class StGlobal(State):
         self.run_action('PathTo', new_pos)
 
     def on_collide(self, event):
-        return 'Global'
+        return ('change', 'Global')
 
 class StKill(StGlobal):
     def loop(self):
