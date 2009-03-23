@@ -1,3 +1,5 @@
+import pygame
+
 from .basic import SpBase
 from ..util  import vec2d
 
@@ -8,12 +10,12 @@ class SpShoot(SpBase):
 
         self._config = config
         self._strike = strike
-        self.image = image
+        self._direction = direction.normalized()
+        self.image = pygame.transform.rotate(image, -self._direction.angle)
         self._sprobot = sprobot
         self.rect = self.image.get_rect()
         self._position = position
         self.rect.center = self._position
-        self._direction = direction.normalized()
 
     def step(self, god, intv):
         self._position += self._direction*self._config['speed']*intv

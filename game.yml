@@ -9,18 +9,25 @@ system:
     capture_output: capture
 
 setting:
+    system:
+        cp_recover: 0.007
     shoots:
         normal:
-            speed:  0.5
+            speed:  0.4
             image:  shoot-1
             damage: 10
             cp:     10
+        laser:
+            speed:  0.7
+            image:  shoot-2
+            damage: 10
+            cp:     20
     robots:
         wasp:
             speed:        0.2
             angle_speed:  0.4
             hp:           500
-            cp:           500
+            cp:           800
             sight:        500
             strike:       0.8
             defend:       0.15
@@ -28,7 +35,7 @@ setting:
         ruby:
             speed:        0.3
             angle_speed:  0.5
-            hp:           500
+            hp:           900
             cp:           400
             sight:        500
             strike:       0.6

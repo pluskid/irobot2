@@ -191,6 +191,7 @@ class God(object):
                     break
             self._engine.render()
 
+            self.recover_property(time_passed, prop='cp')
 
             if capture:
                 self._frames.append(self._engine.screen.copy())
@@ -216,6 +217,16 @@ class God(object):
                 robot.event(event)
         else:
             robot.event(EvIdle())
+
+    def recover_property(self, intv, prop='cp'):
+        recover_speed = self._config['setting']['system']['%s_recover'%prop]
+        rcv = intv*recover_speed
+        for robot in self._robots.itervalues():
+            if not robot['k.alive']:
+                continue
+            prot = self.prototype(robot['k.type'])
+            max_prop = prot[prop]
+            robot['k.%s'%prop] = min(robot['k.%s'%prop]+rcv, max_prop)
 
     def save_capture(self):
         dest_dir = self._config['system']['capture_output']

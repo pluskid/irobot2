@@ -114,9 +114,11 @@ def find_path(map, src, dest):
         path.append(map.tile2pixel(node.pos, center=True))
         node = node.parent
     path.reverse()
-    if map.tile2pixel(start, center=True) != (src[0], src[1]):
+    if len(path) < 1 or \
+       map.tile2pixel(start, center=True) != (src[0], src[1]):
         path.insert(0, (src[0], src[1]))
-    if map.tile2pixel(end, center=True) != (dest[0], dest[1]):
+    if len(path) < 2 or \
+       map.tile2pixel(end, center=True) != (dest[0], dest[1]):
         path.append((dest[0], dest[1]))
     return path
 

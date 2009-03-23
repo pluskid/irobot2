@@ -18,19 +18,19 @@ class PathToAction(AIAction):
         return AcPathTo(robot, dest)
 
 class ShootAtAction(AIAction):
-    def __init__(self, stype):
-        self._stype = stype
+    valid_stypes = ('normal', 'laser')
 
-    def allow_action(self, robot, dest):
-        return robot['k.cp'] >= self.required_cp(robot)
+    def allow_action(self, robot, dest, type='normal'):
+        return type in self.valid_stypes and \
+                robot['k.cp'] >= self.required_cp(robot, type)
 
-    def make_action(self, robot, dest):
-        robot['k.cp'] -= self.required_cp(robot)
-        return AcShootAt(robot, dest, self._stype, robot['k.strike'])
+    def make_action(self, robot, dest, type='normal'):
+        robot['k.cp'] -= self.required_cp(robot, type)
+        return AcShootAt(robot, dest, type, robot['k.strike'])
 
-    def required_cp(self, robot):
+    def required_cp(self, robot, stype):
         god = robot['k.god']
-        config = god.config['setting']['shoots'][self._stype]
+        config = god.config['setting']['shoots'][stype]
         return config['cp']
 
 class ChangeStateAction(AIAction):
@@ -41,16 +41,16 @@ class ChangeStateAction(AIAction):
 all_actions = {
         'MoveTo': MoveToAction(),
         'PathTo': PathToAction(),
-        'ShootAt': ShootAtAction('normal'),
+        'ShootAt': ShootAtAction(),
         'ChangeState': ChangeStateAction()
         }
 
-def perform_action(name, robot, *args):
+def perform_action(name, robot, *args, **kw):
     act = all_actions.get(name)
     if act is None:
         raise IllegalOperation('No such action: %s' % name)
-    if act.allow_action(robot, *args):
-        robot['k.action'] = act.make_action(robot, *args)
+    if act.allow_action(robot, *args, **kw):
+        robot['k.action'] = act.make_action(robot, *args, **kw)
     else:
         robot['k.action'] = AcNop(robot)
 
