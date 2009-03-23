@@ -1,7 +1,8 @@
 import pygame
 
-from .basic import SpBase
+from .basic  import SpBase
 from ..util  import vec2d
+from ..event import EvHurt
 
 class SpRobot(SpBase):
     def __init__(self, robot, image):
@@ -37,9 +38,13 @@ class SpRobot(SpBase):
         self._alpha = self._robot['k.alpha']
         self.image.set_alpha(self._alpha)
 
-    def hurt(self, damage, god):
-        damage -= damage*self._robot['k.defend']
-        self._robot['k.hp'] -= damage
-        if self._robot['k.hp'] <= 0:
+    def hurt(self, damage, god, source):
+        robot = self._robot
+        damage -= damage*robot['k.defend']
+        robot['k.hp'] -= damage
+        if robot['k.hp'] <= 0:
             self.die(god)
             god.robot_die(self._robot)
+        else:
+            if damage > 0:
+                robot.event(EvHurt(damage, source))

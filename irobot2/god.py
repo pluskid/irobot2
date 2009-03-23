@@ -79,11 +79,12 @@ class God(object):
         image = self._engine.get_image(sconfig['image'])
         sprite = SpShoot(image, sprobot, position, direction, 
                          sconfig, strike)
+        sprite.stype = stype
         self._gp_shoots.add(sprite)
 
-    def create_explosion(self, position, target, damage):
+    def create_explosion(self, position, target, damage, source):
         self.create_explosion_animation(position, 'explode-small')
-        target.hurt(damage, self)
+        target.hurt(damage, self, source)
 
     def create_explosion_animation(self, position, exp_type):
         images = self._engine.get_images(exp_type)

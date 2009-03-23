@@ -34,6 +34,7 @@ class StKill(StGlobal):
                                       self.get('the-enemy.name'))
             if enemy is not None:
                 for rep in range(3):
+                    print 'Shoot %d' % rep
                     self.run_action('ShootAt', enemy.position, type='laser')
             else:
                 self.run_action('ChangeState', 'Global')

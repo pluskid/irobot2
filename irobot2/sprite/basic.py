@@ -7,7 +7,7 @@ class SpBase(Sprite):
         Sprite.__init__(self)
         self.hp = float('inf')
     
-    def hurt(self, damage, god):
+    def hurt(self, damage, god, source):
         self.hp -= damage
         if self.hp <= 0:
             self.die(god)

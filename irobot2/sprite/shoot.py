@@ -23,7 +23,15 @@ class SpShoot(SpBase):
         if target is not None:
             self.kill()
             god.create_explosion(self._position, target, 
-                                 self._config['damage']*self._strike)
+                                 self._config['damage']*self._strike,
+                                 self)
+
+    @property
+    def direction(self):
+        return self._direction
+    @property
+    def speed(self):
+        return self._config['speed']
 
     def update(self):
         self.rect.center = self._position
