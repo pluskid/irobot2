@@ -45,11 +45,11 @@ class StateRunner(Thread):
     def put(self, key, val):
         self._robot['u.%s'%key] = val
 
-    def run_action(self, name, *args, **kw):
+    def run_action(self, name, *args):
         if threading.currentThread() is not self:
             raise IllegalOperation('Action can only be run in loop')
         # perform action
-        perform_action(name, self._robot, *args, **kw)
+        perform_action(name, self._robot, *args)
         # and then wait for action to finish
         self._event.wait()
         self._event.clear()

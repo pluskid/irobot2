@@ -25,5 +25,5 @@ class StKill(StGlobal):
         if enemy is None:
             self.run_action('ChangeState', 'Global')
         else:
-            self.run_action('ShootAt', enemy.position)
+            self.run_action('ShootAt', enemy.position, 'normal')
 

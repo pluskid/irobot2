@@ -20,11 +20,11 @@ class PathToAction(AIAction):
 class ShootAtAction(AIAction):
     valid_stypes = ('normal', 'laser')
 
-    def allow_action(self, robot, dest, type='normal'):
+    def allow_action(self, robot, dest, type):
         return type in self.valid_stypes and \
                 robot['k.cp'] >= self.required_cp(robot, type)
 
-    def make_action(self, robot, dest, type='normal'):
+    def make_action(self, robot, dest, type):
         robot['k.cp'] -= self.required_cp(robot, type)
         return AcShootAt(robot, dest, type, robot['k.strike'])
 
@@ -34,8 +34,8 @@ class ShootAtAction(AIAction):
         return config['cp']
 
 class ChangeStateAction(AIAction):
-    def make_action(self, robot, state):
-        return AcChangeState(robot, state)
+    def make_action(self, robot, state, *args):
+        return AcChangeState(robot, state, *args)
 
 
 all_actions = {
@@ -45,12 +45,12 @@ all_actions = {
         'ChangeState': ChangeStateAction()
         }
 
-def perform_action(name, robot, *args, **kw):
+def perform_action(name, robot, *args):
     act = all_actions.get(name)
     if act is None:
         raise IllegalOperation('No such action: %s' % name)
-    if act.allow_action(robot, *args, **kw):
-        robot['k.action'] = act.make_action(robot, *args, **kw)
+    if act.allow_action(robot, *args):
+        robot['k.action'] = act.make_action(robot, *args)
     else:
         robot['k.action'] = AcNop(robot)
 

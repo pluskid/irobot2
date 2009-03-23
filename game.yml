@@ -28,7 +28,7 @@ setting:
             angle_speed:  0.4
             hp:           500
             cp:           800
-            sight:        500
+            sight:        900
             strike:       0.8
             defend:       0.15
             image:        robot-1
@@ -37,7 +37,7 @@ setting:
             angle_speed:  0.5
             hp:           900
             cp:           400
-            sight:        500
+            sight:        900
             strike:       0.6
             defend:       0.25
             image:        robot-2
@@ -46,7 +46,7 @@ setting:
             angle_speed:  0.2
             hp:           1000
             cp:           1000
-            sight:        450
+            sight:        950
             strike:       1
             defend:       0.4
             image:        robot-4

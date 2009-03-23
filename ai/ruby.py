@@ -1,43 +1,73 @@
-from random         import randint
+from random         import randint, choice
 
 from irobot2.ai.api import State
 from irobot2.util   import vec2d
 
 class StGlobal(State):
+    def initialize(self):
+        size = self.map_size()
+        self.pos_candidates = [(0, 0),
+                               (size[0]-1, 0),
+                               (size[0]-1, size[1]-1),
+                               (0, size[1]-1),
+                               (size[0]/2, size[1]/2)]
+
     def loop(self):
         friends, enemies = self.look_around()
         if len(enemies) != 0:
             enemy = enemies[0]
-            self.put('the-enemy.team', enemy.team)
-            self.put('the-enemy.name', enemy.name)
-            self.run_action('ChangeState', 'Kill')
-        new_pos = self.position+vec2d(randint(0, 100), randint(0, 100))
+            self.run_action('ChangeState', 'MoveAround', 
+                            self.calc_good_pos(enemy),
+                            enemy.team, enemy.name)
+        new_pos = self.grid2point(choice(self.pos_candidates))
         self.run_action('PathTo', new_pos)
 
     def on_collide(self, event):
         return ('change', 'Global')
 
-class StKill(StGlobal):
+
+    def calc_good_pos(self, enemy):
+        dir = (self.position-enemy.position).normalized()
+        return enemy.position + dir.rotated(randint(-40, 40))*100
+
+class StMoveAround(StGlobal):
+    def __init__(self, pos, team, name):
+        self._pos = pos
+        self._ntry = 0
+        self._team = team
+        self._name = name
+
     def loop(self):
-        team = self.get('the-enemy.team')
-        name = self.get('the-enemy.name')
-        enemy = self.get_info(team, name)
-        if enemy is None:
-            self.run_action('ChangeState', 'Global')
+        self._ntry += 1
+        if self._ntry == 1:
+            self.run_action('MoveTo', self._pos)
+        elif self._ntry < 5:
+            self.run_action('PathTo', self._pos)
         else:
-            direction = enemy.position - self.position
-            pos = enemy.position - direction.normalized()*150
-            pos += (randint(-80, 80), randint(-20, 20))
-            if (pos-self.position).length > 40:
-                self.run_action('MoveTo', pos)
-                enemy = self.get_info(self.get('the-enemy.team'),
-                                      self.get('the-enemy.name'))
-            if enemy is not None:
-                for rep in range(3):
-                    print 'Shoot %d' % rep
-                    self.run_action('ShootAt', enemy.position, type='laser')
-            else:
-                self.run_action('ChangeState', 'Global')
+            self.run_action('ChangeState', 'ShootAt', 
+                            self._team, self._name)
 
     def on_collide(self, event):
         return ('continue',)
+
+class StShootAt(StGlobal):
+    def __init__(self, team, name):
+        self._team = team
+        self._name = name
+
+    def loop(self):
+        target = self.get_info(self._team, self._name)
+        if target is None:
+            self.run_action('ChangeState', 'Global')
+        else:
+            self.run_action('ShootAt', target.position, 'laser')
+
+    def on_hurt(self, event):
+        target = self.get_info(self._team, self._name)
+        if target is None:
+            return ('change', 'Global')
+        else:
+            return ('change', 'MoveAround',
+                    self.calc_good_pos(target),
+                    self._team, self._name)
+
