@@ -30,6 +30,7 @@ class GameMap(object):
                 spobj = SpObject(self.tile2pixel(pos), image)
                 spobj.hp = float(info['info']['hp'][obj['type']])
                 spobj.type = obj['type']
+                spobj.position = pos
                 self._gp_all.add(spobj)
                 self._grid[pos[0]][pos[1]] = spobj
                 self._bitgrid[pos[0]][pos[1]] = 1

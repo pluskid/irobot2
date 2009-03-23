@@ -118,7 +118,11 @@ class StateRunner(Thread):
             if elem is None:
                 return DictObj({'type': 'empty'})
             elif elem.type in ['box', 'treasure']:
-                return DictObj({'type': elem.type, 'hp': elem.hp})
+                return DictObj({
+                    'type': elem.type, 
+                    'hp': elem.hp,
+                    'position': elem.position
+                })
             elif elem.type == 'obstacle':
                 return DictObj({'type': elem.type})
             
