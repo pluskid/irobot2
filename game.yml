@@ -13,12 +13,12 @@ setting:
         cp_recover: 0.007
     shoots:
         normal:
-            speed:  0.4
+            speed:  0.5
             image:  shoot-1
             damage: 10
             cp:     10
         laser:
-            speed:  0.7
+            speed:  1
             image:  shoot-2
             damage: 10
             cp:     20

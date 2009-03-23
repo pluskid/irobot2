@@ -25,5 +25,18 @@ class StKill(StGlobal):
         if enemy is None:
             self.run_action('ChangeState', 'Global')
         else:
-            self.run_action('ShootAt', enemy.position, type='laser')
+            direction = enemy.position - self.position
+            pos = enemy.position - direction.normalized()*150
+            pos += (randint(-80, 80), randint(-20, 20))
+            if (pos-self.position).length > 40:
+                self.run_action('MoveTo', pos)
+                enemy = self.get_info(self.get('the-enemy.team'),
+                                      self.get('the-enemy.name'))
+            if enemy is not None:
+                for rep in range(3):
+                    self.run_action('ShootAt', enemy.position, type='laser')
+            else:
+                self.run_action('ChangeState', 'Global')
 
+    def on_collide(self, event):
+        return ':continue'

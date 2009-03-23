@@ -174,10 +174,14 @@ class AI(object):
             new_state = self._state_runner._state.handle_event(event)
 
         if new_state is not None:
-            self._state_runner.terminate_looping()
-            self._state_runner = StateRunner(self._robot,
-                                             self._states[new_state])
-            self._state_runner.start_looping()
+            if new_state == ':continue':
+                self._robot['k.action'] = None
+                self._state_runner.continue_looping()
+            else:
+                self._state_runner.terminate_looping()
+                self._state_runner = StateRunner(self._robot,
+                                                 self._states[new_state])
+                self._state_runner.start_looping()
 
 
 def parse_module(module):
