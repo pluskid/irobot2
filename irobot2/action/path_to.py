@@ -2,7 +2,7 @@ from random   import randint
 
 from .basic   import Action
 from .compose import SequenceAction
-from .move    import AcMoveTo
+from .move    import AcMove, AcTurn
 from ..util   import vec2d
 
 class AcPathTo(SequenceAction):
@@ -20,11 +20,13 @@ class AcPathTo(SequenceAction):
             if node[0]-node_prev[0] == xinc and \
                node[1]-node_prev[1] == yinc:
                 continue
-            actions.append(AcMoveTo(robot, vec2d(node_prev)))
+            actions.append(AcTurn(robot, node_prev-node_start))
+            actions.append(AcMove(robot, node_prev))
             node_start = node_prev
             xinc = node[0]-node_prev[0]
             yinc = node[1]-node_prev[1]
-        actions.append(AcMoveTo(robot, vec2d(path[-1])))
+        actions.append(AcTurn(robot, node_prev-node_start))
+        actions.append(AcMove(robot, node_prev))
         SequenceAction.__init__(self, robot, actions)
 
 class Node(object):
