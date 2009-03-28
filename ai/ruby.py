@@ -1,10 +1,11 @@
-from random         import randint, choice
+from random         import randint, choice, random
 
 from irobot2.ai.api import State
 from irobot2.util   import vec2d
 
 class StGlobal(State):
     def initialize(self):
+        print 'Enter Global'
         size = self.map_size()
         self.pos_candidates = [(0, 0),
                                (size[0]-1, 0),
@@ -23,7 +24,13 @@ class StGlobal(State):
         self.run_action('PathTo', new_pos)
 
     def on_collide(self, event):
-        return ('change', 'Global')
+        if event.target.type != 'robot':
+            return ('change', 'Global')
+        else:
+            if random() > 0.7:
+                return ('change', 'Global')
+            else:
+                return None
 
 
     def calc_good_pos(self, enemy):
