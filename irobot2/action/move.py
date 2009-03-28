@@ -56,15 +56,12 @@ class AcTurn(Action):
             return self.event_done()
         return None
 
-class AcMoveTo(Action):
+class AcMoveTo(SequenceAction):
     def __init__(self, robot, dest):
         Action.__init__(self, robot)
         aturn = AcTurn(robot, dest-robot.position)
         amove = AcMove(robot, dest)
-        self._action = SequenceAction(robot, [aturn, amove])
-
-    def update(self, god, intv):
-        return self._action.update(god, intv)
+        SequenceAction.__init__(self, robot, [aturn, amove])
 
 class AcDisappear(Action):
     def __init__(self, robot):

@@ -5,7 +5,6 @@ from irobot2.util   import vec2d
 
 class StGlobal(State):
     def initialize(self):
-        print 'Enter Global'
         size = self.map_size()
         self.pos_candidates = [(0, 0),
                                (size[0]-1, 0),

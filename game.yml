@@ -36,7 +36,7 @@ setting:
             speed:        0.25
             angle_speed:  0.44
             hp:           500
-            cp:           800
+            cp:           900
             sight:        900
             strike:       0.6
             defend:       0.25
