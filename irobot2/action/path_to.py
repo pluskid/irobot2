@@ -25,8 +25,8 @@ class AcPathTo(SequenceAction):
             node_start = node_prev
             xinc = node[0]-node_prev[0]
             yinc = node[1]-node_prev[1]
-        actions.append(AcTurn(robot, node_prev-node_start))
-        actions.append(AcMove(robot, node_prev))
+        actions.append(AcTurn(robot, path[-1]-node_start))
+        actions.append(AcMove(robot, path[-1]))
         SequenceAction.__init__(self, robot, actions)
 
 class Node(object):

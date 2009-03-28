@@ -5,23 +5,34 @@ engine:
     fullscreen: false
 
 system:
-    capture: false
-    capture_output: capture
+    capture:         false
+    capture_output:  capture
 
 setting:
     system:
-        cp_recover: 0.007
+        cp_recover:  0.007
     shoots:
         normal:
-            speed:  0.5
-            image:  shoot-1
-            damage: 10
-            cp:     10
+            speed:   0.5
+            image:   shoot-1
+            damage:  10
+            cp:      10
+            charge:  100
+            explode: explode-small
         laser:
-            speed:  1
-            image:  shoot-2
-            damage: 10
-            cp:     15
+            speed:   1
+            image:   shoot-2
+            damage:  10
+            cp:      15
+            charge:  40
+            explode: explode-small
+        missile:
+            speed:   0.1
+            image:   shoot-3
+            damage:  150
+            cp:      100
+            charge:  800
+            explode: explode-normal
     robots:
         wasp:
             speed:        0.15

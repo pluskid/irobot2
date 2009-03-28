@@ -18,7 +18,7 @@ class PathToAction(AIAction):
         return AcPathTo(robot, dest)
 
 class ShootAtAction(AIAction):
-    valid_stypes = ('normal', 'laser')
+    valid_stypes = ('normal', 'laser', 'missile')
 
     def allow_action(self, robot, dest, type):
         return type in self.valid_stypes and \

@@ -15,9 +15,9 @@ from   ai             import wasp, ruby
 with open('game.yml') as ins:
     god = God(yaml.load(ins.read()))
 
-#robot1 = god.build_robot('wasp', 'kid', 'Apache1')
+robot1 = god.build_robot('wasp', 'kid', 'Apache1')
 robot2 = god.build_robot('ruby', 'kid', 'Apache2')
-#robot3 = god.build_robot('wasp', 'kid', 'Apache3')
+robot3 = god.build_robot('wasp', 'kid', 'Apache3')
 
 robot4 = god.build_robot('apache_II', 'kily', 'Ruby')
 
@@ -25,9 +25,9 @@ robot4 = god.build_robot('apache_II', 'kily', 'Ruby')
 states_wasp = parse_module(wasp)
 states_ruby = parse_module(ruby)
 
-#connect_states(robot1, states_wasp)
+connect_states(robot1, states_wasp)
 connect_states(robot2, states_ruby)
-#connect_states(robot3, states_wasp)
+connect_states(robot3, states_wasp)
 connect_states(robot4, states_wasp)
 
 god.start()

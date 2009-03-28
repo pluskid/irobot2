@@ -82,8 +82,8 @@ class God(object):
         sprite.stype = stype
         self._gp_shoots.add(sprite)
 
-    def create_explosion(self, position, target, damage, source):
-        self.create_explosion_animation(position, 'explode-small')
+    def create_explosion(self, position, target, damage, etype, source):
+        self.create_explosion_animation(position, etype)
         target.hurt(damage, self, source)
 
     def create_explosion_animation(self, position, exp_type):

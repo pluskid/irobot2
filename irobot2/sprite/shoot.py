@@ -24,7 +24,7 @@ class SpShoot(SpBase):
             self.kill()
             god.create_explosion(self._position, target, 
                                  self._config['damage']*self._strike,
-                                 self)
+                                 self._config['explode'], self)
 
     @property
     def direction(self):
