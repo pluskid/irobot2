@@ -5,6 +5,7 @@ from   random        import randint
 import pygame
 from   pygame.locals import *
 from   pygame.sprite import Group
+from   pygame.mixer  import music
 
 from   .sprite    import SpRobot, SpAnimation, SpShoot, SpHPOverlay
 from   .engine    import Engine
@@ -32,6 +33,9 @@ class God(object):
             self._frames = []
 
         self._teams = {}
+
+        music.load(path.join(self._engine.resource_base_path, 
+                             'sound', self._config['system']['bg_music']))
 
     def build_robot(self, rtype, team, name):
         robot_id = '%s.%s' % (team, name)
@@ -157,6 +161,7 @@ class God(object):
         for robot in self._robots.itervalues():
             self.robot_born(robot)
 
+        music.play()
         capture = self._config['system']['capture']
         paused = False
         while True:
@@ -171,6 +176,10 @@ class God(object):
                         break
                     elif event.key == K_SPACE:
                         paused = not paused
+                        if paused:
+                            music.pause()
+                        else:
+                            music.unpause()
             if terminate:
                 break
 
@@ -197,6 +206,8 @@ class God(object):
 
             if capture:
                 self._frames.append(self._engine.screen.copy())
+
+        music.fadeout(1000)
         if capture:
             self.save_capture()
         sys.exit()

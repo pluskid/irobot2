@@ -27,6 +27,10 @@ class Engine(object):
 
         self._groups = []
 
+    @property
+    def resource_base_path(self):
+        return self._resmgr.base_path
+
     def get_sound(self, key, basepath=None):
         return self._resmgr.get_sound(key, basepath=basepath)
 

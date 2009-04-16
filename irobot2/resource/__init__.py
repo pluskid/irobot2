@@ -9,9 +9,13 @@ class ResourceManager(object):
     def __init__(self):
         self._res = dict()
 
+    @property
+    def base_path(self):
+        return path.dirname(__file__)
+
     def get_sound(self, key, basepath=None):
         if basepath is None:
-            basepath = path.join(path.dirname(__file__), 'sound')
+            basepath = path.join(self.base_path, 'sound')
         realkey = 'sound.%s.%s' % (basepath, key)
         sound = self._res.get(realkey)
         if sound is None:
@@ -22,7 +26,7 @@ class ResourceManager(object):
 
     def get_image(self, key, colorkey='alpha', basepath=None):
         if basepath is None:
-            basepath = path.join(path.dirname(__file__), 'image')
+            basepath = path.join(self.base_path, 'image')
         realkey = 'image.%s.%s' % (basepath, key)
         image = self._res.get(realkey)
         if image is None:
@@ -33,7 +37,7 @@ class ResourceManager(object):
 
     def get_images(self, key, colorkey='alpha', basepath=None):
         if basepath is None:
-            basepath = path.join(path.dirname(__file__), 'image')
+            basepath = path.join(self.base_path, 'image')
         realkey = 'images.%s.%s' % (basepath, key)
         images = self._res.get(realkey)
         if images is None:
