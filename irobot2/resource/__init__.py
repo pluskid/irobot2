@@ -3,10 +3,22 @@ from   os import path
 
 import pygame
 from   pygame.locals import *
+from   pygame.mixer  import Sound
 
 class ResourceManager(object):
     def __init__(self):
         self._res = dict()
+
+    def get_sound(self, key, basepath=None):
+        if basepath is None:
+            basepath = path.join(path.dirname(__file__), 'sound')
+        realkey = 'sound.%s.%s' % (basepath, key)
+        sound = self._res.get(realkey)
+        if sound is None:
+            fn = path.join(basepath, '%s.wav' % key)
+            sound = Sound(fn)
+            self._res[realkey] = sound
+        return sound
 
     def get_image(self, key, colorkey='alpha', basepath=None):
         if basepath is None:

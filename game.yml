@@ -19,6 +19,7 @@ setting:
             cp:      10
             charge:  100
             explode: explode-small
+            sound:   fire-normal
         laser:
             speed:   1
             image:   shoot-2
@@ -26,6 +27,7 @@ setting:
             cp:      15
             charge:  40
             explode: explode-small
+            sound:   fire-laser
         missile:
             speed:   0.1
             image:   shoot-3
@@ -33,6 +35,7 @@ setting:
             cp:      100
             charge:  800
             explode: explode-normal
+            sound:   fire-missile
     robots:
         wasp:
             speed:        0.15

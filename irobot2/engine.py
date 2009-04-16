@@ -15,6 +15,7 @@ class Engine(object):
         else:
             flag = DOUBLEBUF
         pygame.init()
+        pygame.mixer.set_num_channels(80)
         self._screen = pygame.display.set_mode(
                 (self._width, self._height), flag)
         self._clock = pygame.time.Clock()
@@ -25,6 +26,9 @@ class Engine(object):
             self._map = GameMap(self._resmgr)
 
         self._groups = []
+
+    def get_sound(self, key, basepath=None):
+        return self._resmgr.get_sound(key, basepath=basepath)
 
     def get_image(self, key, colorkey='alpha', basepath=None):
         return self._resmgr.get_image(key, colorkey=colorkey,

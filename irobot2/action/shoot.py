@@ -14,15 +14,18 @@ class AcShoot(Action):
         self._state = self.NOT_CHARGED
 
     def update(self, god, intv):
+        config = god.config['setting']['shoots'][self._stype]
+
         if self._state == self.NOT_CHARGED:
             self._state = self.CHARGING
-            config = god.config['setting']['shoots'][self._stype]
             self._charging_remain = config['charge']
             self.charge(intv)
         elif self._state == self.CHARGING:
             self.charge(intv)
 
         if self._state == self.CHARGED:
+            sound = god._engine.get_sound(config['sound'])
+            sound.play()
             position  = self._robot['k.position']
             direction = self._robot['k.direction']
             width = self._robot['k.sprite']._base_image.get_rect().width

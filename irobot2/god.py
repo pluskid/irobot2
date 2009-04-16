@@ -88,7 +88,8 @@ class God(object):
 
     def create_explosion_animation(self, position, exp_type):
         images = self._engine.get_images(exp_type)
-        explode = SpAnimation(position, images)
+        sound = self._engine.get_sound(exp_type)
+        explode = SpAnimation(position, images, sound=sound)
         self._gp_animations.add(explode)
 
     def robot_look_around(self, robot):
